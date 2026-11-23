@@ -2,3 +2,5 @@
 .freebuff/
 .cloud-attachments/
 Thumbs.db
+# Source art: only the optimised WebP illustrations ship
+img/original/
