@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Day Arnold Hybrid Bulking Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-amber-200 selection:text-stone-900">
+
+    <!-- Chosen Palette: Warm Stone & Terracotta Accent (bg-stone-50, text-stone-800, surface-white, accent-amber-600, secondary-teal-600) -->
+    <!-- Application Structure Plan: Designed as a task-oriented Interactive Training & Bulking Dashboard with 4 cohesive modules: (1) Overview & Weekly Architecture (explaining the 2x frequency Arnold x Upper/Lower hybrid logic and sub-60m pacing rules), (2) Interactive 5-Day Workout Explorer (allowing users to switch between training days, toggle Experience Level to auto-adjust Week 1-2 volume, check off exercises, and filter by Poster Source), (3) Volume & Time Analytics (visualizing direct vs. indirect sets against the 10-20 hypertrophy sweet spot and workout time allocation via Chart.js), and (4) Personalized Starting Weight & Bulking Calculator (dynamically computing starting working weights via Epley/BW ratios and daily calories/macros based on the user's current skinny bodyweight). This structure transforms a static document into an actionable daily gym companion and personalized nutrition/load planner. -->
+    <!-- Visualization & Content Choices: 
+         1. Weekly Schedule & Time-Budget Cards -> Goal: Inform & Organize -> Structured HTML/Tailwind interactive day selector -> Clicking any day switches the active workout view immediately -> High scannability on mobile in the gym.
+         2. Workout Table with Novice Mode Toggle -> Goal: Organize & Instruct -> Interactive HTML Table + JS State -> Toggle reduces 3-set lifts to 2 sets for Weeks 1-2 per report guidelines; checkboxes track session progress -> Directly implements beginner adaptation rules.
+         3. Weekly Muscle Volume Bar Chart -> Goal: Compare & Audit -> Stacked Horizontal Bar Chart (Chart.js Canvas) -> Shows Direct Sets + Fractional Indirect Compound Sets vs. 10-20 set hypertrophy zone -> Proves every muscle hits 2x frequency and optimal volume.
+         4. Session Time-Budget Donut Chart -> Goal: Inform -> Donut Chart (Chart.js Canvas) -> Breaks down the ~52 min session into Warm-up, Straight Sets, Antagonist Supersets, and Transitions -> Visually demonstrates how supersetting keeps sessions under 60 minutes.
+         5. Personalized Load & Macro Calculator -> Goal: Relationships & Personalize -> Interactive Range Slider/Number Input + Dynamic JS Tables -> Updates Week 1 compound working weights (kg/lb) and daily caloric surplus/protein/carb/fat targets -> Eliminates manual math for skinny beginners.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-white border-b border-stone-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold text-xl shadow-sm">
+                        &#128170;
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-bold text-stone-900 tracking-tight">5-Day Arnold Hybrid Plan</h1>
+                        <p class="text-xs sm:text-sm text-stone-500">2x Weekly Frequency &bull; Under 60 Mins &bull; Skinny Fast-Bulking Protocol</p>
+                    </div>
+                </div>
+                <nav class="flex flex-wrap gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium" aria-label="Primary Navigation">
+                    <button onclick="scrollToSection('section-architecture')" class="px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-amber-50 hover:text-amber-700 text-stone-700 transition">1. Split &amp; Pacing</button>
+                    <button onclick="scrollToSection('section-workouts')" class="px-3 py-1.5 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition shadow-sm">2. 5-Day Workouts</button>
+                    <button onclick="scrollToSection('section-analytics')" class="px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-amber-50 hover:text-amber-700 text-stone-700 transition">3. Volume Audit</button>
+                    <button onclick="scrollToSection('section-calculator')" class="px-3 py-1.5 rounded-lg bg-stone-100 hover:bg-amber-50 hover:text-amber-700 text-stone-700 transition">4. Weights &amp; Diet</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- SECTION 1: ARCHITECTURE & PACING -->
+        <section id="section-architecture" class="scroll-mt-24 space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">Program Architecture</span>
+                    <span class="text-xs text-stone-500">3-On / 1-Off / 2-On / 1-Off</span>
+                </div>
+                <h2 class="text-2xl font-bold text-stone-900 mb-3">Why Arnold &times; Upper/Lower Solves the 5-Day Frequency Puzzle</h2>
+                <p class="text-stone-600 leading-relaxed mb-6">
+                    This section explains the structural blueprint of your training week and the time-saving pacing rules that keep every session under 60 minutes. Running a classic 6-day Arnold split across only five days leaves one muscle group at a suboptimal 1x weekly frequency. By pairing three traditional Arnold days (Monday–Wednesday) with a rest day (Thursday) and two Upper/Lower hybrid days (Friday–Saturday), every major muscle group receives an exact <strong>2x weekly growth stimulus</strong> while capping workouts at <strong>49–54 minutes</strong>.
+                </p>
+
+                <!-- Key Metrics Strip -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                        <div class="text-xs font-semibold text-stone-500 uppercase">Muscle Frequency</div>
+                        <div class="text-2xl font-extrabold text-stone-900 mt-1">2&times; / Week</div>
+                        <div class="text-xs text-teal-700 mt-1 font-medium">All 11 muscle groups</div>
+                    </div>
+                    <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                        <div class="text-xs font-semibold text-stone-500 uppercase">Session Duration</div>
+                        <div class="text-2xl font-extrabold text-amber-600 mt-1">49–54 Min</div>
+                        <div class="text-xs text-stone-500 mt-1">Via antagonist supersets</div>
+                    </div>
+                    <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                        <div class="text-xs font-semibold text-stone-500 uppercase">Weekly Set Target</div>
+                        <div class="text-2xl font-extrabold text-stone-900 mt-1">10–20 Sets</div>
+                        <div class="text-xs text-stone-500 mt-1">Direct + fractional overlap</div>
+                    </div>
+                    <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
+                        <div class="text-xs font-semibold text-stone-500 uppercase">Training Effort</div>
+                        <div class="text-2xl font-extrabold text-stone-900 mt-1">1–3 RIR</div>
+                        <div class="text-xs text-stone-500 mt-1">Reps in reserve per set</div>
+                    </div>
+                </div>
+
+                <!-- 7-Day Interactive Schedule Bar -->
+                <h3 class="text-sm font-bold uppercase tracking-wider text-stone-700 mb-3">Weekly Schedule (Click a Training Day to Jump to Workout)</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-2.5 mb-8">
+                    <button onclick="selectWorkoutDay('day1', true)" class="text-left p-3.5 rounded-xl border border-stone-200 bg-white hover:border-amber-500 hover:shadow-md transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-600">MON &bull; DAY 1</span>
+                            <span class="text-xs text-stone-400 group-hover:text-amber-600">~53m &rarr;</span>
+                        </div>
+                        <div class="font-bold text-stone-900 text-sm mt-1">Chest &amp; Back</div>
+                        <div class="text-xs text-stone-500 mt-1">Arnold Split &bull; 22 sets</div>
+                    </button>
+
+                    <button onclick="selectWorkoutDay('day2', true)" class="text-left p-3.5 rounded-xl border border-stone-200 bg-white hover:border-amber-500 hover:shadow-md transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-600">TUE &bull; DAY 2</span>
+                            <span class="text-xs text-stone-400 group-hover:text-amber-600">~50m &rarr;</span>
+                        </div>
+                        <div class="font-bold text-stone-900 text-sm mt-1">Shoulders &amp; Arms</div>
+                        <div class="text-xs text-stone-500 mt-1">Arnold Split &bull; 25 sets</div>
+                    </button>
+
+                    <button onclick="selectWorkoutDay('day3', true)" class="text-left p-3.5 rounded-xl border border-stone-200 bg-white hover:border-amber-500 hover:shadow-md transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-600">WED &bull; DAY 3</span>
+                            <span class="text-xs text-stone-400 group-hover:text-amber-600">~53m &rarr;</span>
+                        </div>
+                        <div class="font-bold text-stone-900 text-sm mt-1">Legs &amp; Abs</div>
+                        <div class="text-xs text-stone-500 mt-1">Arnold Split &bull; 22 sets</div>
+                    </button>
+
+                    <div class="p-3.5 rounded-xl border border-dashed border-stone-300 bg-stone-100/70">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-teal-700">THU &bull; REST</span>
+                            <span class="text-xs text-stone-400">Off</span>
+                        </div>
+                        <div class="font-bold text-stone-700 text-sm mt-1">Active Recovery</div>
+                        <div class="text-xs text-stone-500 mt-1">Hit calorie surplus &amp; sleep</div>
+                    </div>
+
+                    <button onclick="selectWorkoutDay('day5', true)" class="text-left p-3.5 rounded-xl border border-stone-200 bg-white hover:border-amber-500 hover:shadow-md transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-600">FRI &bull; DAY 4</span>
+                            <span class="text-xs text-stone-400 group-hover:text-amber-600">~51m &rarr;</span>
+                        </div>
+                        <div class="font-bold text-stone-900 text-sm mt-1">Upper Body</div>
+                        <div class="text-xs text-stone-500 mt-1">Hybrid 2x Hit &bull; 24 sets</div>
+                    </button>
+
+                    <button onclick="selectWorkoutDay('day6', true)" class="text-left p-3.5 rounded-xl border border-stone-200 bg-white hover:border-amber-500 hover:shadow-md transition group">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-600">SAT &bull; DAY 5</span>
+                            <span class="text-xs text-stone-400 group-hover:text-amber-600">~51m &rarr;</span>
+                        </div>
+                        <div class="font-bold text-stone-900 text-sm mt-1">Lower &amp; Abs</div>
+                        <div class="text-xs text-stone-500 mt-1">Hybrid 2x Hit &bull; 19 sets</div>
+                    </button>
+
+                    <div class="p-3.5 rounded-xl border border-dashed border-stone-300 bg-stone-100/70">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-teal-700">SUN &bull; REST</span>
+                            <span class="text-xs text-stone-400">Off</span>
+                        </div>
+                        <div class="font-bold text-stone-700 text-sm mt-1">Full Recovery</div>
+                        <div class="text-xs text-stone-500 mt-1">Prep for Monday pressing</div>
+                    </div>
+                </div>
+
+                <!-- 3 Pacing Rules -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-stone-100">
+                    <div class="p-4 rounded-xl bg-amber-50/60 border border-amber-200/70">
+                        <div class="font-bold text-stone-900 text-sm mb-1">&#9201; 1. Ramp-Up Warm-Ups (5–6m)</div>
+                        <p class="text-xs text-stone-600 leading-relaxed">Skip long cardio warm-ups. Do 2–3 mins dynamic prep + 2 fast warm-up sets on your first lift (6 reps @ 50%, rest 1m; 4 reps @ 70%, rest 1m).</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-stone-50 border border-stone-200">
+                        <div class="font-bold text-stone-900 text-sm mb-1">&#127947; 2. Heavy Straight Sets (2–3m Rest)</div>
+                        <p class="text-xs text-stone-600 leading-relaxed">Perform primary squats, deadlifts, bench presses, and barbell rows as straight sets with full 2–3 minute rest so nervous system fatigue never compromises form.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-200/70">
+                        <div class="font-bold text-stone-900 text-sm mb-1">&#9889; 3. Antagonist Supersets (30–45s Swap)</div>
+                        <p class="text-xs text-stone-600 leading-relaxed">Pair opposing muscles (e.g., Incline Press + Lat Pulldown, Curl + Triceps Extension). Rest 30–45s between paired moves and 90–120s after each round.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: INTERACTIVE 5-DAY WORKOUT EXPLORER -->
+        <section id="section-workouts" class="scroll-mt-24 space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">Interactive Training Log</span>
+                        <h2 class="text-2xl font-bold text-stone-900 mt-2">Complete 5-Day Workout Routines</h2>
+                        <p class="text-sm text-stone-600 mt-1">
+                            Select a workout day below to inspect exact sets, reps, rest intervals, RIR effort targets, and poster exercise origins. Use the <strong>Experience Level</strong> toggle if you are in your first 2 weeks of lifting.
+                        </p>
+                    </div>
+
+                    <!-- Controls: Experience Toggle & Source Filter -->
+                    <div class="flex flex-wrap items-center gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200">
+                        <div>
+                            <label for="experienceMode" class="block text-[11px] font-bold uppercase text-stone-500 mb-1">Experience Level</label>
+                            <select id="experienceMode" onchange="renderActiveWorkout()" class="text-xs sm:text-sm font-semibold bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-stone-800 focus:outline-none focus:border-amber-600">
+                                <option value="standard">Standard (Week 3+ Full Volume)</option>
+                                <option value="novice">Brand New (Weeks 1–2 Ramp-In)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="sourceFilter" class="block text-[11px] font-bold uppercase text-stone-500 mb-1">Exercise Source</label>
+                            <select id="sourceFilter" onchange="renderActiveWorkout()" class="text-xs sm:text-sm font-semibold bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-stone-800 focus:outline-none focus:border-amber-600">
+                                <option value="all">All Exercises</option>
+                                <option value="poster">Verified Poster Exercises Only</option>
+                                <option value="hybrid">Arnold / Hybrid Additions</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day Selector Tabs -->
+                <div class="flex flex-wrap gap-2 border-b border-stone-200 pb-4 mb-6" role="tablist">
+                    <button id="tab-day1" onclick="selectWorkoutDay('day1', false)" class="day-tab px-4 py-2 rounded-xl text-sm font-bold transition bg-amber-600 text-white shadow-sm">
+                        Day 1: Chest &amp; Back
+                    </button>
+                    <button id="tab-day2" onclick="selectWorkoutDay('day2', false)" class="day-tab px-4 py-2 rounded-xl text-sm font-bold transition bg-stone-100 text-stone-700 hover:bg-stone-200">
+                        Day 2: Shoulders &amp; Arms
+                    </button>
+                    <button id="tab-day3" onclick="selectWorkoutDay('day3', false)" class="day-tab px-4 py-2 rounded-xl text-sm font-bold transition bg-stone-100 text-stone-700 hover:bg-stone-200">
+                        Day 3: Legs &amp; Abs
+                    </button>
+                    <button id="tab-day5" onclick="selectWorkoutDay('day5', false)" class="day-tab px-4 py-2 rounded-xl text-sm font-bold transition bg-stone-100 text-stone-700 hover:bg-stone-200">
+                        Day 4 (Fri): Upper Body
+                    </button>
+                    <button id="tab-day6" onclick="selectWorkoutDay('day6', false)" class="day-tab px-4 py-2 rounded-xl text-sm font-bold transition bg-stone-100 text-stone-700 hover:bg-stone-200">
+                        Day 5 (Sat): Lower &amp; Abs
+                    </button>
+                </div>
+
+                <!-- Active Workout Header Summary -->
+                <div id="workout-summary-bar" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-stone-50 rounded-xl p-4 border border-stone-200 mb-6">
+                    <div>
+                        <h3 id="workout-title" class="text-lg font-bold text-stone-900">Day 1: Chest &amp; Back</h3>
+                        <p id="workout-subtitle" class="text-xs sm:text-sm text-stone-600 mt-0.5">Estimated Duration: ~52–54 Minutes &bull; 22 Working Sets</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <div class="text-xs text-stone-500 font-medium">Session Completion</div>
+                            <div id="workout-progress-text" class="text-sm font-bold text-teal-700">0 / 8 Completed</div>
+                        </div>
+                        <button onclick="resetDayCheckboxes()" class="text-xs px-3 py-1.5 rounded-lg border border-stone-300 bg-white hover:bg-stone-100 text-stone-700 font-medium">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Workout Table -->
+                <div class="overflow-x-auto rounded-xl border border-stone-200">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-stone-100 text-stone-600 text-xs uppercase tracking-wider border-b border-stone-200">
+                                <th class="py-3 px-3 w-10 text-center">Done</th>
+                                <th class="py-3 px-3 w-16">Order</th>
+                                <th class="py-3 px-4">Exercise &amp; Origin</th>
+                                <th class="py-3 px-3">Sets &times; Reps</th>
+                                <th class="py-3 px-4">Pairing &amp; Rest Protocol</th>
+                                <th class="py-3 px-3">Target Effort</th>
+                            </tr>
+                        </thead>
+                        <tbody id="workout-table-body" class="divide-y divide-stone-200 text-sm bg-white">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Poster Filtering Note -->
+                <div class="mt-6 p-4 rounded-xl bg-stone-50 border border-stone-200 text-xs text-stone-600 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <strong class="text-stone-800">Poster Inventory Note:</strong> Verified exercises from your <em>Bodybuilding Workout Posters</em> series (Bench/Incline/DB Presses, Fly, Pullover, Rows, Lat Pulldown, Chin-Up, Back Extension, Military/DB Presses, Side/Bent-Over/Low-Pulley Raises, Barbell/Concentration/DB Curls) are prioritized. Behind-the-Neck Press and Front Raises were filtered out to protect shoulder joints and avoid redundant front-delt fatigue.
+                    </div>
+                    <button onclick="togglePosterModal()" class="shrink-0 px-3 py-1.5 bg-white border border-stone-300 rounded-lg font-semibold text-stone-800 hover:bg-stone-100 transition">
+                        View Full Poster Audit
+                    </button>
+                </div>
+
+                <!-- Collapsible Poster Inventory Table -->
+                <div id="poster-audit-panel" class="hidden mt-4 overflow-x-auto rounded-xl border border-stone-200 bg-white">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-stone-100 text-stone-700 border-b border-stone-200">
+                                <th class="py-2.5 px-3 font-bold">Poster Section</th>
+                                <th class="py-2.5 px-3 font-bold">Verified Poster Exercises</th>
+                                <th class="py-2.5 px-3 font-bold">Program Selection &amp; Rationale</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-200 text-stone-600">
+                            <tr>
+                                <td class="py-2.5 px-3 font-bold text-stone-900">Chest</td>
+                                <td class="py-2.5 px-3">Bench Press, DB Press, Decline Press, Incline Press, Incline DB Press, DB Fly, Incline DB Fly, DB Pullover</td>
+                                <td class="py-2.5 px-3"><strong>Selected:</strong> Bench Press, Incline Press, Incline DB Press, DB Press, DB Fly, DB Pullover (covers flat, upper, and stretched angles).</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 font-bold text-stone-900">Back</td>
+                                <td class="py-2.5 px-3">Bent-Over Row, One-Arm DB Row, Seated Row, T-Bar Row, Lat Pulldown, Front Chin-Up, Upright Row, Back Extension</td>
+                                <td class="py-2.5 px-3"><strong>Selected:</strong> Bent-Over Row, Lat Pulldown, Seated Row, Back Extension, Front Chin-Up, One-Arm DB Row.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 font-bold text-stone-900">Shoulders</td>
+                                <td class="py-2.5 px-3">Seated Military Press, Alternate DB Press, Behind-the-Neck Press, Side Lateral, Bent-Over Lateral, Low-Pulley Raise, BB/Alt Front Raises</td>
+                                <td class="py-2.5 px-3"><strong>Selected:</strong> Seated Military, Alt DB Press, Side Lateral, Low-Pulley, Bent-Over Lateral. <em>Filtered out Behind-the-Neck &amp; Front Raises.</em></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 font-bold text-stone-900">Biceps &amp; Forearms</td>
+                                <td class="py-2.5 px-3">DB Curl, Alternate DB Curl, Barbell Curl, Concentration Curl <em>(4 of 8 verified; 4 unlisted on thumbnail)</em></td>
+                                <td class="py-2.5 px-3"><strong>Selected:</strong> Barbell Curl, Concentration/Alt DB Curl + <strong>Supplemented:</strong> Hammer Curl, Wrist Curl, Reverse Wrist Curl.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2.5 px-3 font-bold text-stone-900">Triceps, Legs &amp; Abs</td>
+                                <td class="py-2.5 px-3">8 exercises per poster (individual captions unreadable on low-res thumbnail)</td>
+                                <td class="py-2.5 px-3"><strong>Supplemented from Arnold/Hybrid templates:</strong> Overhead Extensions, Pushdowns, Squats, RDLs, Deadlifts, Leg Press, Hack Squat, Split Squats, Extensions/Curls, Calves, Hanging Leg Raises, Cable Crunches.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: VOLUME & TIME ANALYTICS -->
+        <section id="section-analytics" class="scroll-mt-24 space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-200">Hypertrophy Science Audit</span>
+                <h2 class="text-2xl font-bold text-stone-900 mt-2 mb-3">Weekly Muscle Volume &amp; Session Time Breakdown</h2>
+                <p class="text-stone-600 leading-relaxed mb-6">
+                    Sports science consensus (ACSM, Schoenfeld et al., Baz-Valle et al.) establishes <strong>10–20 hard sets per muscle group per week</strong> across at least two sessions as the optimal hypertrophy zone for natural lifters. The charts below audit how your 5-day hybrid routine distributes direct and indirect compound volume across all muscle groups while keeping a typical 22–24 set workout strictly inside 52 minutes.
+                </p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <!-- Chart 1: Weekly Sets per Muscle -->
+                    <div class="bg-stone-50 rounded-xl p-5 border border-stone-200 flex flex-col">
+                        <div class="mb-3">
+                            <h3 class="font-bold text-stone-900 text-base">Weekly Sets per Muscle Group (Direct + Indirect)</h3>
+                            <p class="text-xs text-stone-500">Hover bars to inspect direct isolation/compound sets vs. fractional secondary sets.</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="volumeChart"></canvas>
+                        </div>
+                        <div class="mt-3 text-xs text-stone-600 bg-white p-3 rounded-lg border border-stone-200">
+                            <strong>Takeaway:</strong> Primary upper and lower muscles hit 12–18.5 effective weekly sets, while smaller muscles (calves, abs, forearms) receive 6–10.5 targeted sets without adding extra gym days.
+                        </div>
+                    </div>
+
+                    <!-- Chart 2: Session Time Allocation -->
+                    <div class="bg-stone-50 rounded-xl p-5 border border-stone-200 flex flex-col">
+                        <div class="mb-3">
+                            <h3 class="font-bold text-stone-900 text-base">How a 22-Set Workout Fits Into ~52 Minutes</h3>
+                            <p class="text-xs text-stone-500">Time allocation breakdown for Day 1 (Chest &amp; Back) using antagonist supersets.</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                        <div class="mt-3 text-xs text-stone-600 bg-white p-3 rounded-lg border border-stone-200">
+                            <strong>Takeaway:</strong> Performing 22–25 straight sets normally takes ~66 minutes. Pairing opposing exercises saves ~14 minutes per workout while maintaining full mechanical tension.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PERSONALIZED WEIGHTS & FAST BULKING CALCULATOR -->
+        <section id="section-calculator" class="scroll-mt-24 space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">Personalized Calibration</span>
+                <h2 class="text-2xl font-bold text-stone-900 mt-2 mb-3">Starting Weights &amp; Fast-Bulking Nutrition Calculator</h2>
+                <p class="text-stone-600 leading-relaxed mb-6">
+                    Enter your current bodyweight and biological sex below to calculate realistic <strong>Week 1 working weights</strong> (derived from Strength Level beginner 1RM ratios translated to the 75–80% hypertrophy zone via the Epley formula) alongside your <strong>daily bulking calories and macronutrients</strong> tailored for skinny muscle gain.
+                </p>
+
+                <!-- Interactive Inputs -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-stone-50 p-5 rounded-xl border border-stone-200 mb-8">
+                    <div>
+                        <label for="userWeightInput" class="block text-xs font-bold uppercase text-stone-600 mb-1.5">Your Current Bodyweight</label>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="userWeightInput" value="65" min="40" max="150" step="1" oninput="updatePersonalizedPlan()" class="w-full px-3 py-2 bg-white border border-stone-300 rounded-lg font-bold text-stone-900 focus:outline-none focus:border-amber-600">
+                            <select id="weightUnitSelect" onchange="updatePersonalizedPlan()" class="px-3 py-2 bg-white border border-stone-300 rounded-lg font-semibold text-stone-700 focus:outline-none focus:border-amber-600">
+                                <option value="kg">kg</option>
+                                <option value="lb">lb</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="userSexSelect" class="block text-xs font-bold uppercase text-stone-600 mb-1.5">Strength Benchmark Profile</label>
+                        <select id="userSexSelect" onchange="updatePersonalizedPlan()" class="w-full px-3 py-2 bg-white border border-stone-300 rounded-lg font-semibold text-stone-800 focus:outline-none focus:border-amber-600">
+                            <option value="male">Male Beginner Benchmarks</option>
+                            <option value="female">Female Beginner Benchmarks</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="surplusRateSelect" class="block text-xs font-bold uppercase text-stone-600 mb-1.5">Bulking Pace (Caloric Surplus)</label>
+                        <select id="surplusRateSelect" onchange="updatePersonalizedPlan()" class="w-full px-3 py-2 bg-white border border-stone-300 rounded-lg font-semibold text-stone-800 focus:outline-none focus:border-amber-600">
+                            <option value="350">Balanced Fast Bulk (+350 kcal/day)</option>
+                            <option value="450">Aggressive Hardgainer (+450 kcal/day)</option>
+                            <option value="200">Lean Conservative Bulk (+200 kcal/day)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Two-Column Output: Left = Starting Weights, Right = Macros & Recovery -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Starting Compound Weights -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-stone-900">Estimated Week 1 Compound Working Weights</h3>
+                        <div class="overflow-x-auto rounded-xl border border-stone-200">
+                            <table class="w-full text-left border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-stone-100 text-stone-600 text-xs uppercase border-b border-stone-200">
+                                        <th class="py-2.5 px-3">Compound Lift</th>
+                                        <th class="py-2.5 px-3">Est. Beginner 1RM</th>
+                                        <th class="py-2.5 px-3">Week 1 Working Weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="weights-table-body" class="divide-y divide-stone-200 bg-white">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Double Progression Rules -->
+                        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-4 space-y-2">
+                            <div class="font-bold text-stone-900 text-sm">&#128200; 4-Step Double Progression Protocol</div>
+                            <ol class="list-decimal list-inside text-xs text-stone-700 space-y-1.5 leading-relaxed">
+                                <li><strong>Calibrate with RIR:</strong> Pick a weight on Set 1 where the middle of the rep range leaves <strong>2–3 reps in reserve</strong> with clean technique.</li>
+                                <li><strong>Add Reps First:</strong> Keep the weight identical week-to-week and strive to add at least 1 clean rep per set.</li>
+                                <li><strong>Earn Load Jumps:</strong> Only add weight once you hit the <strong>top of the rep range on ALL sets</strong> (e.g., 8, 8, and 8 reps on a 3&times;6–8 lift).</li>
+                                <li><strong>Measured Increments:</strong> Add <strong>2.5 kg (5 lb)</strong> to upper-body lifts and <strong>5 kg (10 lb)</strong> to lower-body lifts next session.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Bulking Nutrition & Recovery Targets -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-stone-900">Daily Bulking Nutrition &amp; Recovery Targets</h3>
+                        <div class="grid grid-cols-2 gap-3" id="macro-cards-grid">
+                        </div>
+
+                        <div class="bg-stone-50 border border-stone-200 rounded-xl p-4 space-y-2.5 text-xs text-stone-600">
+                            <div class="font-bold text-stone-900 text-sm">&#128737; Essential Recovery &amp; Deload Guardrails</div>
+                            <p><strong>Monthly Weight Gain Cap:</strong> Aim for roughly <span id="monthly-gain-cap" class="font-bold text-stone-900">0.8–1.3 kg (1.8–2.9 lb)</span> per month (&le;2% bodyweight/month for novices). If scale weight stalls for 2 consecutive weeks, add +150–200 kcal/day.</p>
+                            <p><strong>Pre-Workout Fuel:</strong> Consume <strong>25–40 g of carbohydrates</strong> alongside protein 60–90 minutes before lifting to power through high-density supersets.</p>
+                            <p><strong>Sleep &amp; Scheduled Deloads:</strong> Sleep <strong>7+ hours nightly</strong>. Every <strong>4–6 weeks</strong>, take a 1-week deload by reducing working weights to ~60% (or cutting sets in half) to clear accumulated fatigue.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center text-xs text-stone-400 pb-8">
+            Informational fitness and nutrition resource based on evidence-based hypertrophy guidelines. Consult a qualified healthcare professional before beginning a new exercise or nutrition program.
+        </footer>
+
+    </main>
+
+    <script>
+        const workoutData = {
+            day1: {
+                title: "Day 1 (Monday): Chest & Back",
+                duration: "~52–54 Minutes",
+                standardSets: 22,
+                noviceSets: 16,
+                exercises: [
+                    { order: "1", name: "Flat Barbell Bench Press", origin: "Chest Poster", isPoster: true, sets: 3, reps: "6–8", pairing: "Straight sets; rest 2.5 min", rir: "2 RIR", isSuperset: false },
+                    { order: "2", name: "Barbell Bent-Over Row", origin: "Back Poster", isPoster: true, sets: 3, reps: "8–10", pairing: "Straight sets; rest 2.5 min", rir: "2 RIR", isSuperset: false },
+                    { order: "3A", name: "Incline Dumbbell Press", origin: "Chest Poster", isPoster: true, sets: 3, reps: "8–12", pairing: "Superset with 3B; 30–45s transition", rir: "1–2 RIR", isSuperset: true },
+                    { order: "3B", name: "Lat Pulldown (Front)", origin: "Back Poster", isPoster: true, sets: 3, reps: "8–12", pairing: "Rest 2 min after completing 3B", rir: "1–2 RIR", isSuperset: true },
+                    { order: "4A", name: "Dumbbell Fly", origin: "Chest Poster", isPoster: true, sets: 3, reps: "12–15", pairing: "Superset with 4B; 30–45s transition", rir: "1 RIR", isSuperset: true },
+                    { order: "4B", name: "Seated Cable Row", origin: "Back Poster", isPoster: true, sets: 3, reps: "10–12", pairing: "Rest 2 min after completing 4B", rir: "1–2 RIR", isSuperset: true },
+                    { order: "5A", name: "Dumbbell Pullover", origin: "Chest Poster", isPoster: true, sets: 2, reps: "12–15", pairing: "Superset with 5B; 30s transition", rir: "1–2 RIR", isSuperset: true },
+                    { order: "5B", name: "Back Extension", origin: "Back Poster", isPoster: true, sets: 2, reps: "12–15", pairing: "Rest 90s after completing 5B", rir: "2 RIR", isSuperset: true }
+                ]
+            },
+            day2: {
+                title: "Day 2 (Tuesday): Shoulders, Biceps, Triceps & Forearms",
+                duration: "~49–51 Minutes",
+                standardSets: 25,
+                noviceSets: 18,
+                exercises: [
+                    { order: "1", name: "Seated Military Press", origin: "Shoulders Poster", isPoster: true, sets: 3, reps: "6–10", pairing: "Straight sets; rest 2.5 min", rir: "2 RIR", isSuperset: false },
+                    { order: "2A", name: "Side Lateral Raise", origin: "Shoulders Poster", isPoster: true, sets: 3, reps: "12–15", pairing: "Superset with 2B; 30s transition", rir: "0–1 RIR", isSuperset: true },
+                    { order: "2B", name: "Bent-Over Lateral Raise", origin: "Shoulders Poster", isPoster: true, sets: 3, reps: "12–15", pairing: "Rest 90s after completing 2B", rir: "1 RIR", isSuperset: true },
+                    { order: "3A", name: "Barbell Curl", origin: "Biceps Poster", isPoster: true, sets: 3, reps: "8–10", pairing: "Superset with 3B; 30–45s transition", rir: "1–2 RIR", isSuperset: true },
+                    { order: "3B", name: "Overhead DB/Cable Triceps Extension", origin: "Arnold / Hybrid", isPoster: false, sets: 3, reps: "10–12", pairing: "Rest 2 min after completing 3B", rir: "1–2 RIR", isSuperset: true },
+                    { order: "4A", name: "Concentration Curl or Alt DB Curl", origin: "Biceps Poster", isPoster: true, sets: 3, reps: "10–12", pairing: "Superset with 4B; 30s transition", rir: "1 RIR", isSuperset: true },
+                    { order: "4B", name: "V-Bar or Rope Triceps Pushdown", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "10–15", pairing: "Rest 90s after completing 4B", rir: "0–1 RIR", isSuperset: true },
+                    { order: "5A", name: "Barbell/Dumbbell Wrist Curl", origin: "Arnold Addition", isPoster: false, sets: 2, reps: "12–15", pairing: "Superset with 5B; 15–30s transition", rir: "1 RIR", isSuperset: true },
+                    { order: "5B", name: "Reverse Wrist Curl", origin: "Arnold Addition", isPoster: false, sets: 2, reps: "12–15", pairing: "Rest 60s after completing 5B", rir: "1 RIR", isSuperset: true }
+                ]
+            },
+            day3: {
+                title: "Day 3 (Wednesday): Legs & Abdominals",
+                duration: "~52–54 Minutes",
+                standardSets: 22,
+                noviceSets: 16,
+                exercises: [
+                    { order: "1", name: "Barbell Back Squat", origin: "Arnold / Hybrid", isPoster: false, sets: 3, reps: "6–8", pairing: "Straight sets; rest 3 min", rir: "2 RIR", isSuperset: false },
+                    { order: "2", name: "Barbell Romanian Deadlift", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "8–10", pairing: "Straight sets; rest 2.5 min", rir: "2 RIR", isSuperset: false },
+                    { order: "3", name: "45° Leg Press", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "10–12", pairing: "Straight sets; rest 2 min", rir: "1–2 RIR", isSuperset: false },
+                    { order: "4A", name: "Machine Leg Extension", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "12–15", pairing: "Superset with 4B; 30s transition", rir: "1 RIR", isSuperset: true },
+                    { order: "4B", name: "Seated or Lying Leg Curl", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "10–15", pairing: "Rest 90s after completing 4B", rir: "1 RIR", isSuperset: true },
+                    { order: "5A", name: "Standing Calf Raise", origin: "Arnold / Hybrid", isPoster: false, sets: 4, reps: "12–15", pairing: "Superset with 5B (4th set solo); 30s swap", rir: "1 RIR", isSuperset: true },
+                    { order: "5B", name: "Hanging Leg Raise or Reverse Crunch", origin: "Arnold / Hybrid", isPoster: false, sets: 3, reps: "12–15", pairing: "Rest 90s after completing 5B", rir: "1–2 RIR", isSuperset: true }
+                ]
+            },
+            day5: {
+                title: "Day 4 (Friday): Hybrid Upper Body",
+                duration: "~50–52 Minutes",
+                standardSets: 24,
+                noviceSets: 16,
+                exercises: [
+                    { order: "1A", name: "Incline Barbell Press", origin: "Chest Poster", isPoster: true, sets: 3, reps: "8–10", pairing: "Superset with 1B; 45s transition", rir: "2 RIR", isSuperset: true },
+                    { order: "1B", name: "Front Chin-Up (or Assisted)", origin: "Back Poster", isPoster: true, sets: 3, reps: "6–10", pairing: "Rest 2 min after completing 1B", rir: "1–2 RIR", isSuperset: true },
+                    { order: "2A", name: "Flat Dumbbell Press", origin: "Chest Poster", isPoster: true, sets: 3, reps: "8–12", pairing: "Superset with 2B; 45s transition", rir: "1–2 RIR", isSuperset: true },
+                    { order: "2B", name: "One-Arm Dumbbell Row", origin: "Back Poster", isPoster: true, sets: 3, reps: "8–12 / arm", pairing: "Rest 2 min after completing 2B", rir: "1–2 RIR", isSuperset: true },
+                    { order: "3A", name: "Alternate Dumbbell Shoulder Press", origin: "Shoulders Poster", isPoster: true, sets: 3, reps: "8–12", pairing: "Superset with 3B; 30s transition", rir: "1–2 RIR", isSuperset: true },
+                    { order: "3B", name: "Low-Pulley Raise or Side Lateral", origin: "Shoulders Poster", isPoster: true, sets: 3, reps: "12–15", pairing: "Rest 90s after completing 3B", rir: "0–1 RIR", isSuperset: true },
+                    { order: "4A", name: "Dumbbell Hammer Curl", origin: "Hybrid (Biceps/Forearms)", isPoster: false, sets: 3, reps: "10–12", pairing: "Superset with 4B; 30s transition", rir: "1 RIR", isSuperset: true },
+                    { order: "4B", name: "Overhead Cable Ext. or Rope Pushdown", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "10–15", pairing: "Rest 90s after completing 4B", rir: "0–1 RIR", isSuperset: true }
+                ]
+            },
+            day6: {
+                title: "Day 5 (Saturday): Hybrid Lower Body & Abs",
+                duration: "~50–52 Minutes",
+                standardSets: 19,
+                noviceSets: 14,
+                exercises: [
+                    { order: "1", name: "Barbell Deadlift", origin: "Arnold / Hybrid", isPoster: false, sets: 3, reps: "5–8", pairing: "Straight sets; rest 3 min", rir: "2 RIR", isSuperset: false },
+                    { order: "2", name: "Hack Squat (or High-Foot Leg Press)", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "8–12", pairing: "Straight sets; rest 2.5 min", rir: "1–2 RIR", isSuperset: false },
+                    { order: "3", name: "Dumbbell Bulgarian Split Squat", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "10–12 / leg", pairing: "Straight sets; rest 2 min", rir: "1–2 RIR", isSuperset: false },
+                    { order: "4A", name: "Seated or Lying Leg Curl", origin: "Hybrid Addition", isPoster: false, sets: 3, reps: "12–15", pairing: "Superset with 4B; 30s transition", rir: "1 RIR", isSuperset: true },
+                    { order: "4B", name: "Seated Calf Raise", origin: "Hybrid Addition", isPoster: false, sets: 4, reps: "15–20", pairing: "Rest 90s after completing 4B", rir: "1 RIR", isSuperset: true },
+                    { order: "5", name: "Cable Crunch (or Weighted Crunch)", origin: "Arnold / Hybrid", isPoster: false, sets: 3, reps: "12–15", pairing: "Straight sets; rest 60s", rir: "1–2 RIR", isSuperset: false }
+                ]
+            }
+        };
+
+        let currentDay = 'day1';
+        const completedItems = {
+            day1: {},
+            day2: {},
+            day3: {},
+            day5: {},
+            day6: {}
+        };
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectWorkoutDay(dayKey, shouldScroll) {
+            currentDay = dayKey;
+            document.querySelectorAll('.day-tab').forEach(btn => {
+                btn.classList.remove('bg-amber-600', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-stone-100', 'text-stone-700', 'hover:bg-stone-200');
+            });
+            const activeBtn = document.getElementById('tab-' + dayKey);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-stone-100', 'text-stone-700', 'hover:bg-stone-200');
+                activeBtn.classList.add('bg-amber-600', 'text-white', 'shadow-sm');
+            }
+            renderActiveWorkout();
+            if (shouldScroll) {
+                scrollToSection('section-workouts');
+            }
+        }
+
+        function toggleExerciseDone(idx) {
+            completedItems[currentDay][idx] = !completedItems[currentDay][idx];
+            renderActiveWorkout();
+        }
+
+        function resetDayCheckboxes() {
+            completedItems[currentDay] = {};
+            renderActiveWorkout();
+        }
+
+        function renderActiveWorkout() {
+            const data = workoutData[currentDay];
+            const expMode = document.getElementById('experienceMode').value;
+            const srcFilter = document.getElementById('sourceFilter').value;
+
+            const totalSets = expMode === 'novice' ? data.noviceSets : data.standardSets;
+            const durationText = expMode === 'novice' ? "~40–44 Minutes (Novice Ramp-In)" : data.duration;
+
+            document.getElementById('workout-title').textContent = data.title;
+            document.getElementById('workout-subtitle').textContent = `Estimated Duration: ${durationText} • ${totalSets} Working Sets`;
+
+            const tbody = document.getElementById('workout-table-body');
+            tbody.innerHTML = '';
+
+            let visibleCount = 0;
+            let doneCount = 0;
+
+            data.exercises.forEach((ex, index) => {
+                if (srcFilter === 'poster' && !ex.isPoster) return;
+                if (srcFilter === 'hybrid' && ex.isPoster) return;
+
+                visibleCount++;
+                const isDone = !!completedItems[currentDay][index];
+                if (isDone) doneCount++;
+
+                let adjustedSets = ex.sets;
+                if (expMode === 'novice' && ex.sets >= 3) {
+                    adjustedSets = ex.sets === 4 ? 3 : 2;
+                }
+
+                const badgeClass = ex.isPoster
+                    ? "bg-teal-50 text-teal-800 border-teal-200"
+                    : "bg-stone-100 text-stone-600 border-stone-200";
+
+                const orderBadge = ex.isSuperset
+                    ? "bg-amber-100 text-amber-900 border-amber-300"
+                    : "bg-stone-800 text-white border-stone-800";
+
+                const rowBg = isDone ? "bg-teal-50/40" : "hover:bg-stone-50";
+
+                const tr = document.createElement('tr');
+                tr.className = `${rowBg} transition`;
+                tr.innerHTML = `
+                    <td class="py-3 px-3 text-center">
+                        <input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleExerciseDone(${index})" aria-label="Mark ${ex.name} done" class="w-4 h-4 accent-amber-600 rounded cursor-pointer">
+                    </td>
+                    <td class="py-3 px-3">
+                        <span class="inline-block text-xs font-extrabold px-2 py-0.5 rounded border ${orderBadge}">${ex.order}</span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="font-bold text-stone-900 ${isDone ? 'line-through text-stone-400' : ''}">${ex.name}</div>
+                        <span class="inline-block mt-1 text-[11px] font-medium px-2 py-0.5 rounded border ${badgeClass}">${ex.origin}</span>
+                    </td>
+                    <td class="py-3 px-3 font-extrabold text-stone-900 whitespace-nowrap">
+                        ${adjustedSets} &times; ${ex.reps}
+                        ${expMode === 'novice' && adjustedSets !== ex.sets ? '<span class="block text-[10px] font-normal text-amber-700">(Weeks 1–2 adjusted)</span>' : ''}
+                    </td>
+                    <td class="py-3 px-4 text-xs sm:text-sm text-stone-600">${ex.pairing}</td>
+                    <td class="py-3 px-3 whitespace-nowrap">
+                        <span class="text-xs font-semibold px-2 py-1 rounded-md bg-stone-100 text-stone-800 border border-stone-200">${ex.rir}</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (visibleCount === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 px-4 text-center text-sm text-stone-500">No exercises match the selected source filter for this training day. Switch filter back to "All Exercises".</td></tr>`;
+            }
+
+            document.getElementById('workout-progress-text').textContent = `${doneCount} / ${visibleCount} Completed`;
+        }
+
+        function togglePosterModal() {
+            const panel = document.getElementById('poster-audit-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function roundToIncrement(val, inc) {
+            return Math.round(val / inc) * inc;
+        }
+
+        function updatePersonalizedPlan() {
+            let weightVal = parseFloat(document.getElementById('userWeightInput').value);
+            if (isNaN(weightVal) || weightVal < 30) weightVal = 65;
+
+            const unit = document.getElementById('weightUnitSelect').value;
+            const sex = document.getElementById('userSexSelect').value;
+            const surplus = parseInt(document.getElementById('surplusRateSelect').value, 10);
+
+            const weightKg = unit === 'kg' ? weightVal : weightVal / 2.20462;
+            const weightLb = unit === 'lb' ? weightVal : weightVal * 2.20462;
+
+            // Ratios based on Strength Level Beginner Benchmarks
+            const ratios = sex === 'male'
+                ? [
+                    { name: "Barbell Bench Press", reps: "8–10 reps", ratio: 0.66, minKg: 20 },
+                    { name: "Barbell Back Squat", reps: "8–10 reps", ratio: 0.88, minKg: 20 },
+                    { name: "Barbell Deadlift", reps: "5–8 reps", ratio: 1.07, minKg: 30 },
+                    { name: "Seated Military Press", reps: "8–10 reps", ratio: 0.38, minKg: 20 },
+                    { name: "Barbell Bent-Over Row", reps: "8–10 reps", ratio: 0.56, minKg: 20 }
+                ]
+                : [
+                    { name: "Barbell Bench Press", reps: "8–10 reps", ratio: 0.35, minKg: 15 },
+                    { name: "Barbell Back Squat", reps: "8–10 reps", ratio: 0.55, minKg: 20 },
+                    { name: "Barbell Deadlift", reps: "5–8 reps", ratio: 0.72, minKg: 20 },
+                    { name: "Seated Military Press", reps: "8–10 reps", ratio: 0.22, minKg: 10 },
+                    { name: "Barbell Bent-Over Row", reps: "8–10 reps", ratio: 0.32, minKg: 15 }
+                ];
+
+            const tbody = document.getElementById('weights-table-body');
+            tbody.innerHTML = '';
+
+            ratios.forEach(item => {
+                const est1RMKg = Math.max(item.minKg, weightKg * item.ratio);
+                const workLowKg = Math.max(item.minKg, roundToIncrement(est1RMKg * 0.72, 2.5));
+                const workHighKg = Math.max(workLowKg, roundToIncrement(est1RMKg * 0.78, 2.5));
+
+                const est1RMLb = roundToIncrement(est1RMKg * 2.20462, 5);
+                const workLowLb = roundToIncrement(workLowKg * 2.20462, 5);
+                const workHighLb = Math.max(workLowLb, roundToIncrement(workHighKg * 2.20462, 5));
+
+                const display1RM = unit === 'kg'
+                    ? `${roundToIncrement(est1RMKg, 2.5)} kg (${est1RMLb} lb)`
+                    : `${est1RMLb} lb (${roundToIncrement(est1RMKg, 2.5)} kg)`;
+
+                const displayWork = unit === 'kg'
+                    ? `${workLowKg}–${workHighKg} kg (${workLowLb}–${workHighLb} lb)`
+                    : `${workLowLb}–${workHighLb} lb (${workLowKg}–${workHighKg} kg)`;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-2.5 px-3 font-bold text-stone-900">${item.name}</td>
+                    <td class="py-2.5 px-3 text-stone-600">${display1RM}</td>
+                    <td class="py-2.5 px-3 font-extrabold text-amber-700">${displayWork} <span class="block text-[11px] font-normal text-stone-500">for ${item.reps}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Nutrition Calculation (Maintenance approx ~33 kcal/kg for active 5x/wk skinny lifter)
+            const estMaintenance = Math.round(weightKg * 33);
+            const targetCalories = estMaintenance + surplus;
+
+            const protLow = Math.round(weightKg * 1.6);
+            const protHigh = Math.round(weightKg * 2.2);
+
+            const carbLow = Math.round(weightKg * 4.0);
+            const carbHigh = Math.round(weightKg * 6.0);
+
+            const fatLow = Math.round(weightKg * 0.6);
+            const fatHigh = Math.round(weightKg * 0.9);
+
+            const maxGainKg = (weightKg * 0.02).toFixed(1);
+            const maxGainLb = (weightLb * 0.02).toFixed(1);
+            document.getElementById('monthly-gain-cap').textContent = `${maxGainKg} kg (${maxGainLb} lb)`;
+
+            const macroGrid = document.getElementById('macro-cards-grid');
+            macroGrid.innerHTML = `
+                <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200">
+                    <div class="text-[11px] font-bold uppercase text-amber-800">Daily Bulking Calories</div>
+                    <div class="text-xl font-extrabold text-stone-900 mt-1">~${targetCalories.toLocaleString()} kcal</div>
+                    <div class="text-[11px] text-stone-600 mt-0.5">Est. maint (~${estMaintenance}) + ${surplus} kcal</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-teal-50 border border-teal-200">
+                    <div class="text-[11px] font-bold uppercase text-teal-800">Daily Protein (1.6–2.2g/kg)</div>
+                    <div class="text-xl font-extrabold text-stone-900 mt-1">${protLow}–${protHigh} g</div>
+                    <div class="text-[11px] text-stone-600 mt-0.5">Split across 3–5 daily meals</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+                    <div class="text-[11px] font-bold uppercase text-stone-600">Carbohydrates (4–6g/kg)</div>
+                    <div class="text-xl font-extrabold text-stone-900 mt-1">${carbLow}–${carbHigh} g</div>
+                    <div class="text-[11px] text-stone-500 mt-0.5">Fuels high-density supersets</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+                    <div class="text-[11px] font-bold uppercase text-stone-600">Dietary Fat (0.6–0.9g/kg)</div>
+                    <div class="text-xl font-extrabold text-stone-900 mt-1">${fatLow}–${fatHigh} g</div>
+                    <div class="text-[11px] text-stone-500 mt-0.5">Supports hormone production</div>
+                </div>
+            `;
+        }
+
+        function wrapLabel(str, maxLen = 16) {
+            if (str.length <= maxLen) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length <= maxLen) {
+                    currentLine = (currentLine + ' ' + word).trim();
+                } else {
+                    if (currentLine) lines.push(currentLine);
+                    currentLine = word;
+                }
+            });
+            if (currentLine) lines.push(currentLine);
+            return lines;
+        }
+
+        function initCharts() {
+            const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+            const muscleLabels = [
+                'Back (Lats/Mid/Erectors)',
+                'Chest',
+                'Shoulders',
+                'Quadriceps',
+                'Hamstrings & Glutes',
+                'Triceps',
+                'Biceps',
+                'Forearms',
+                'Calves',
+                'Abdominals'
+            ].map(l => wrapLabel(l, 16));
+
+            new Chart(volumeCtx, {
+                type: 'bar',
+                data: {
+                    labels: muscleLabels,
+                    datasets: [
+                        {
+                            label: 'Direct Sets / Week',
+                            data: [17, 15, 15, 15, 12, 9, 9, 7, 8, 6],
+                            backgroundColor: '#d97706',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Indirect Compound Overlap (0.5x)',
+                            data: [1.5, 0, 4.5, 1.5, 4.5, 9, 7.5, 3.5, 0, 3],
+                            backgroundColor: '#0d9488',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, font: { size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.x} sets`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            max: 24,
+                            title: { display: true, text: 'Effective Weekly Sets (Target Zone: 10–20)', font: { size: 11 } },
+                            grid: { color: '#e7e5e4' }
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: { font: { size: 11 } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Antagonist Supersets (26.5m)',
+                        'Heavy Straight Sets (14.5m)',
+                        'Ramp-Up Warm-Up (6.0m)',
+                        'Station Transitions (5.0m)'
+                    ],
+                    datasets: [{
+                        data: [26.5, 14.5, 6.0, 5.0],
+                        backgroundColor: ['#d97706', '#292524', '#0d9488', '#a8a29e'],
+                        borderWidth: 2,
+                        borderColor: '#fafaf9'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, font: { size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label} — ${Math.round((context.parsed / 52) * 100)}% of session`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderActiveWorkout();
+            updatePersonalizedPlan();
+            initCharts();
+        });
+    </script>
+</body>
+</html>

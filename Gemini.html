@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ARNOLD // 5-Day Hybrid Hypertrophy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #0A0A0B;
+            --surface: #141416;
+            --elevated: #1C1C1F;
+            --border: #26262A;
+            --text-primary: #F5F5F7;
+            --text-secondary: #8E8E93;
+
+            --accent: #C6F432;
+            --accent-dim: rgba(198, 244, 50, 0.14);
+            --success: #30D158;
+            --warning: #FF9F0A;
+            --danger: #FF453A;
+
+            --chest: #FF5A5F;
+            --back: #4C8DFF;
+            --shoulders: #F5A623;
+            --arms: #A78BFA;
+            --legs: #2ECC71;
+            --core: #F062B0;
+
+            --radius-card: 20px;
+            --radius-pill: 999px;
+            --radius-btn: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.5;
+            margin: 0;
+            padding-bottom: 92px;
+            overflow-x: hidden;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 32px;
+            }
+        }
+
+        .tabular {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .heading-xl {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        .label-caps {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-secondary);
+        }
+
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+        }
+
+        .card-elevated {
+            background-color: var(--elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .btn {
+            border-radius: var(--radius-btn);
+            transition: transform 160ms ease-out, background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: #0A0A0B;
+        }
+
+        .btn-accent:hover {
+            background-color: #d2f854;
+        }
+
+        .btn-ghost {
+            background-color: var(--elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            border-color: #3a3a40;
+        }
+
+        .pill {
+            border-radius: var(--radius-pill);
+        }
+
+        .ring-progress {
+            transition: stroke-dashoffset 240ms ease-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .muscle-path {
+            fill: #242429;
+            stroke: #141416;
+            stroke-width: 1.2;
+            transition: fill 220ms ease-out, opacity 220ms ease-out;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 290px;
+            max-height: 360px;
+        }
+
+        .tab-view {
+            display: none;
+            animation: fadeIn 200ms ease-out;
+        }
+
+        .tab-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Custom subtle scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2C2C32;
+            border-radius: 999px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header (Desktop Nav + Brand) -->
+    <header class="sticky top-0 z-40 border-b" style="background-color: rgba(10,10,11,0.88); backdrop-filter: blur(14px); border-color: var(--border);">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background-color: var(--accent-dim); color: var(--accent); border: 1px solid rgba(198,244,50,0.3);">
+                    <i data-lucide="dumbbell" class="w-5 h-5" stroke-width="1.75"></i>
+                </div>
+                <div>
+                    <div class="font-extrabold tracking-tight text-base leading-none" style="color: var(--text-primary);">ARNOLD <span style="color: var(--accent);">5X</span></div>
+                    <div class="text-[11px] mt-1" style="color: var(--text-secondary);">2x Frequency &bull; &lt;60m Hybrid</div>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-1 p-1 rounded-2xl" style="background-color: var(--surface); border: 1px solid var(--border);">
+                <button onclick="switchTab('today')" data-nav="today" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                    <i data-lucide="dumbbell" class="w-4 h-4" stroke-width="1.75"></i> Today
+                </button>
+                <button onclick="switchTab('plan')" data-nav="plan" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                    <i data-lucide="calendar-days" class="w-4 h-4" stroke-width="1.75"></i> Plan
+                </button>
+                <button onclick="switchTab('progress')" data-nav="progress" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4" stroke-width="1.75"></i> Progress
+                </button>
+                <button onclick="switchTab('guide')" data-nav="guide" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                    <i data-lucide="book-open" class="w-4 h-4" stroke-width="1.75"></i> Guide
+                </button>
+                <button onclick="switchTab('settings')" data-nav="settings" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                    <i data-lucide="settings" class="w-4 h-4" stroke-width="1.75"></i> Settings
+                </button>
+            </nav>
+
+            <!-- Quick Caloric Pill -->
+            <button onclick="switchTab('settings')" class="pill px-3 py-1.5 text-xs font-semibold tabular flex items-center gap-1.5 transition" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text-primary);">
+                <i data-lucide="flame" class="w-3.5 h-3.5" style="color: var(--warning);" stroke-width="1.75"></i>
+                <span id="header-kcal-badge">2,495 kcal</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+
+        <!-- ========================================================= -->
+        <!-- TAB 1: TODAY (Active Session + Timer + Body Map)          -->
+        <!-- ========================================================= -->
+        <section id="view-today" class="tab-view active space-y-6">
+            <!-- Day Selector Strip -->
+            <div class="flex items-center justify-between gap-2 overflow-x-auto pb-1">
+                <div class="flex items-center gap-2" id="today-day-pills"></div>
+                <button onclick="resetTodayProgress()" class="btn btn-ghost px-3 py-1.5 text-xs shrink-0" title="Reset session checkmarks">
+                    <i data-lucide="repeat" class="w-3.5 h-3.5" stroke-width="1.75"></i> Reset
+                </button>
+            </div>
+
+            <!-- Hero Status + Body Map + Timer Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <!-- Session Overview & Ring Card (7 cols) -->
+                <div class="card p-6 lg:col-span-7 flex flex-col justify-between gap-6">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <div class="label-caps mb-2" id="today-day-tag">MONDAY &bull; ARNOLD SPLIT</div>
+                            <h1 class="heading-xl" id="today-title">Chest &amp; Back</h1>
+                            <p class="mt-2 text-sm" style="color: var(--text-secondary);" id="today-meta">
+                                ~52–54 min &bull; 22 working sets &bull; Antagonist supersets
+                            </p>
+                        </div>
+
+                        <!-- Progress Ring -->
+                        <div class="relative w-20 h-20 shrink-0 flex items-center justify-center">
+                            <svg class="w-20 h-20" viewBox="0 0 80 80">
+                                <circle cx="40" cy="40" r="33" fill="none" stroke="#26262A" stroke-width="7"></circle>
+                                <circle id="today-ring-circle" class="ring-progress" cx="40" cy="40" r="33" fill="none" stroke="#C6F432" stroke-width="7" stroke-linecap="round" stroke-dasharray="207.35" stroke-dashoffset="207.35"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center tabular">
+                                <span id="today-ring-pct" class="text-base font-extrabold">0%</span>
+                                <span id="today-ring-sub" class="text-[10px]" style="color: var(--text-secondary);">0/8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Muscle Mix Chips -->
+                    <div>
+                        <div class="label-caps mb-2.5">MUSCLE MIX</div>
+                        <div class="flex flex-wrap gap-2" id="today-muscle-chips"></div>
+                    </div>
+
+                    <!-- Rest Timer Bar -->
+                    <div class="card-elevated p-4 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--accent);">
+                                <i data-lucide="timer" class="w-5 h-5" stroke-width="1.75"></i>
+                            </div>
+                            <div>
+                                <div class="text-[11px] font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">Rest Timer</div>
+                                <div id="timer-display" class="text-2xl font-extrabold tabular leading-none mt-0.5">01:30</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="setTimerPreset(45)" class="btn btn-ghost px-2.5 py-1.5 text-xs tabular">45s</button>
+                            <button onclick="setTimerPreset(90)" class="btn btn-ghost px-2.5 py-1.5 text-xs tabular">90s</button>
+                            <button onclick="setTimerPreset(150)" class="btn btn-ghost px-2.5 py-1.5 text-xs tabular">2.5m</button>
+                            <button id="timer-toggle-btn" onclick="toggleTimer()" class="btn btn-accent px-3.5 py-1.5 text-xs">
+                                Start
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inline SVG Front/Back Body Map Card (5 cols) -->
+                <div class="card p-6 lg:col-span-5 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="label-caps">TARGET ANATOMY</div>
+                        <span class="text-xs font-medium" style="color: var(--text-secondary);">Front / Back</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 items-center justify-items-center my-auto py-1">
+                        <!-- FRONT SILHOUETTE -->
+                        <div class="flex flex-col items-center">
+                            <svg viewBox="0 0 140 280" class="w-32 h-56" aria-label="Front muscle map">
+                                <!-- Head & Neck -->
+                                <circle cx="70" cy="24" r="14" fill="#242429" />
+                                <rect x="63" y="38" width="14" height="10" rx="4" fill="#242429" />
+                                <!-- Shoulders (Front/Side Delts) -->
+                                <path id="front-shoulders" class="muscle-path" d="M44,50 C34,52 28,62 30,76 L41,76 L45,56 Z M96,50 C106,52 112,62 110,76 L99,76 L95,56 Z" />
+                                <!-- Chest -->
+                                <path id="front-chest" class="muscle-path" d="M46,52 L69,54 L69,82 C57,84 47,79 44,72 Z M94,52 L71,54 L71,82 C83,84 93,79 96,72 Z" />
+                                <!-- Arms (Biceps & Forearms) -->
+                                <path id="front-arms" class="muscle-path" d="M30,78 L41,78 L39,112 L28,110 Z M28,114 L38,115 L33,148 L24,146 Z M110,78 L99,78 L101,112 L112,110 Z M112,114 L102,115 L107,148 L116,146 Z" />
+                                <!-- Core (Abs & Obliques) -->
+                                <path id="front-core" class="muscle-path" d="M48,84 L92,84 L88,136 L52,136 Z" />
+                                <!-- Legs (Quads & Calves Front) -->
+                                <path id="front-legs" class="muscle-path" d="M49,140 L68,140 L66,202 L47,202 Z M91,140 L72,140 L74,202 L93,202 Z M48,206 L65,206 L61,262 L49,262 Z M92,206 L75,206 L79,262 L91,262 Z" />
+                            </svg>
+                            <span class="text-[11px] font-medium mt-1" style="color: var(--text-secondary);">Front</span>
+                        </div>
+
+                        <!-- BACK SILHOUETTE -->
+                        <div class="flex flex-col items-center">
+                            <svg viewBox="0 0 140 280" class="w-32 h-56" aria-label="Back muscle map">
+                                <!-- Head & Neck -->
+                                <circle cx="70" cy="24" r="14" fill="#242429" />
+                                <rect x="63" y="38" width="14" height="10" rx="4" fill="#242429" />
+                                <!-- Rear Shoulders -->
+                                <path id="back-shoulders" class="muscle-path" d="M43,50 C33,52 28,62 30,76 L41,76 L45,56 Z M97,50 C107,52 112,62 110,76 L99,76 L95,56 Z" />
+                                <!-- Back (Traps, Lats, Erectors) -->
+                                <path id="back-back" class="muscle-path" d="M54,46 L86,46 L95,62 L87,114 L70,132 L53,114 L45,62 Z" />
+                                <!-- Arms (Triceps & Forearms) -->
+                                <path id="back-arms" class="muscle-path" d="M30,78 L41,78 L39,112 L28,110 Z M28,114 L38,115 L33,148 L24,146 Z M110,78 L99,78 L101,112 L112,110 Z M112,114 L102,115 L107,148 L116,146 Z" />
+                                <!-- Legs (Glutes, Hamstrings, Calves) -->
+                                <path id="back-legs" class="muscle-path" d="M49,134 L91,134 L93,164 L47,164 Z M48,167 L68,167 L66,204 L47,204 Z M92,167 L72,167 L74,204 L93,204 Z M48,208 L65,208 L62,262 L49,262 Z M92,208 L75,208 L78,262 L91,262 Z" />
+                            </svg>
+                            <span class="text-[11px] font-medium mt-1" style="color: var(--text-secondary);">Back</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t flex items-center justify-between text-xs" style="border-color: var(--border); color: var(--text-secondary);">
+                        <span>2x Weekly Frequency</span>
+                        <span style="color: var(--accent);" class="font-semibold">Active Focus</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Workout Exercise Cards -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="section-title">Session Exercises</h2>
+                    <span class="text-xs" style="color: var(--text-secondary);">Tap check to complete &bull; Weights calibrated in Settings</span>
+                </div>
+                <div id="today-exercise-list" class="space-y-2.5"></div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 2: PLAN (Full 5-Day Hybrid Schedule + Filters)        -->
+        <!-- ========================================================= -->
+        <section id="view-plan" class="tab-view space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <div class="label-caps mb-1.5">THIS WEEK &bull; 3-ON / 1-OFF / 2-ON / 1-OFF</div>
+                    <h1 class="heading-xl">5-Day Arnold Hybrid</h1>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <select id="plan-exp-select" onchange="syncExperienceSetting(this.value)" class="px-3.5 py-2 rounded-xl text-xs font-semibold focus:outline-none" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text-primary);">
+                        <option value="standard">Week 3+ Standard Volume</option>
+                        <option value="novice">Weeks 1–2 Novice Ramp-In</option>
+                    </select>
+                    <select id="plan-source-select" onchange="renderPlanView()" class="px-3.5 py-2 rounded-xl text-xs font-semibold focus:outline-none" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text-primary);">
+                        <option value="all">All Exercises</option>
+                        <option value="poster">Poster Verified Only</option>
+                        <option value="hybrid">Hybrid / Arnold Additions</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 7-Day Schedule Overview Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5" id="plan-week-grid"></div>
+
+            <!-- Selected Day Full Breakdown -->
+            <div class="card p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b" style="border-color: var(--border);">
+                    <div>
+                        <div class="label-caps" id="plan-detail-tag">DAY 1 &bull; MONDAY</div>
+                        <h2 class="section-title mt-1" id="plan-detail-title">Chest &amp; Back</h2>
+                    </div>
+                    <button onclick="launchSelectedPlanDay()" class="btn btn-accent px-4 py-2 text-xs">
+                        <i data-lucide="dumbbell" class="w-4 h-4" stroke-width="1.75"></i> Open in Today Runner
+                    </button>
+                </div>
+
+                <div id="plan-detail-list" class="space-y-2.5"></div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 3: PROGRESS (Volume Audit + Time Donut + Heatmap)     -->
+        <!-- ========================================================= -->
+        <section id="view-progress" class="tab-view space-y-6">
+            <div>
+                <div class="label-caps mb-1.5">HYPERTROPHY ANALYTICS</div>
+                <h1 class="heading-xl">Volume &amp; Pacing Audit</h1>
+            </div>
+
+            <!-- Top KPI Row -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="card p-4">
+                    <div class="label-caps">FREQUENCY</div>
+                    <div class="text-2xl font-extrabold tabular mt-1.5" style="color: var(--accent);">2&times; / wk</div>
+                    <div class="text-xs mt-1" style="color: var(--text-secondary);">All 11 muscle groups</div>
+                </div>
+                <div class="card p-4">
+                    <div class="label-caps">AVG DURATION</div>
+                    <div class="text-2xl font-extrabold tabular mt-1.5">51 min</div>
+                    <div class="text-xs mt-1" style="color: var(--success);">Under 60m ceiling</div>
+                </div>
+                <div class="card p-4">
+                    <div class="label-caps">WEEKLY VOLUME</div>
+                    <div class="text-2xl font-extrabold tabular mt-1.5">112 sets</div>
+                    <div class="text-xs mt-1" style="color: var(--text-secondary);">10–20 optimal zone</div>
+                </div>
+                <div class="card p-4">
+                    <div class="label-caps">TARGET GAIN</div>
+                    <div class="text-2xl font-extrabold tabular mt-1.5" id="progress-gain-kpi">+1.3 kg/mo</div>
+                    <div class="text-xs mt-1" style="color: var(--text-secondary);">&le;2% BW lean cap</div>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <div class="label-caps">EFFECTIVE WEEKLY SETS</div>
+                        <h2 class="section-title mt-1">Direct + Compound Overlap</h2>
+                        <p class="text-xs mt-1" style="color: var(--text-secondary);">Primary muscles hit 12–18.5 sets inside the 10–20 hypertrophy zone.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="volumeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card p-6 flex flex-col justify-between">
+                    <div class="mb-4">
+                        <div class="label-caps">SESSION EFFICIENCY</div>
+                        <h2 class="section-title mt-1">52-Minute Time Budget</h2>
+                        <p class="text-xs mt-1" style="color: var(--text-secondary);">Antagonist supersets save ~14 minutes compared to straight sets.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Muscle Distribution Cards -->
+            <div class="card p-6">
+                <div class="label-caps mb-3">WEEKLY MUSCLE BREAKDOWN</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="muscle-summary-cards"></div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 4: GUIDE (Methodology + Poster Audit + Nutrition)     -->
+        <!-- ========================================================= -->
+        <section id="view-guide" class="tab-view space-y-6">
+            <div>
+                <div class="label-caps mb-1.5">TRAINING &amp; BULKING MANUAL</div>
+                <h1 class="heading-xl">Protocol &amp; Poster Audit</h1>
+            </div>
+
+            <!-- 3 Pacing & Split Pillars -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card p-5 space-y-2">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background-color: var(--elevated); color: var(--accent);">
+                        <i data-lucide="repeat" class="w-4 h-4" stroke-width="1.75"></i>
+                    </div>
+                    <h3 class="font-bold text-base">Why Arnold &times; Upper/Lower</h3>
+                    <p class="text-xs leading-relaxed" style="color: var(--text-secondary);">
+                        Running a 6-day Arnold split across 5 days leaves one muscle group at 1x/week. Combining 3 Arnold days (Mon–Wed) with Rest (Thu) and Upper/Lower (Fri–Sat) delivers an exact 2x stimulus to every muscle.
+                    </p>
+                </div>
+
+                <div class="card p-5 space-y-2">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background-color: var(--elevated); color: var(--warning);">
+                        <i data-lucide="timer" class="w-4 h-4" stroke-width="1.75"></i>
+                    </div>
+                    <h3 class="font-bold text-base">Sub-60m Antagonist Pacing</h3>
+                    <p class="text-xs leading-relaxed" style="color: var(--text-secondary);">
+                        Take 2–3 min rest on primary barbell squats, deadlifts, bench, and rows. Pair opposing movements (Incline Press + Pulldown, Curl + Extension) with 30–45s swaps to cut ~14 minutes per workout.
+                    </p>
+                </div>
+
+                <div class="card p-5 space-y-2">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background-color: var(--elevated); color: var(--success);">
+                        <i data-lucide="trending-up" class="w-4 h-4" stroke-width="1.75"></i>
+                    </div>
+                    <h3 class="font-bold text-base">4-Step Double Progression</h3>
+                    <p class="text-xs leading-relaxed" style="color: var(--text-secondary);">
+                        Keep weights steady and add 1+ clean reps weekly at 1–3 RIR. Once you hit the top of the rep range on all sets (e.g. 8, 8, 8), add +2.5 kg (5 lb) upper or +5 kg (10 lb) lower next session.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Nutrition & Recovery Guardrails -->
+            <div class="card p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="label-caps">SKINNY BULKING GUARDRAILS</div>
+                        <h2 class="section-title mt-1">Nutrition, Sleep &amp; Deload Rules</h2>
+                    </div>
+                    <i data-lucide="moon" class="w-5 h-5" style="color: var(--arms);" stroke-width="1.75"></i>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="card-elevated p-4 space-y-1">
+                        <div class="font-bold text-sm" style="color: var(--text-primary);">Caloric Surplus (+300–400 kcal/day)</div>
+                        <p style="color: var(--text-secondary);">Cap scale gain at &le;2% bodyweight/month for novices (&le;1% intermediate). If scale weight stalls for 2 consecutive weeks, add +150–200 kcal/day.</p>
+                    </div>
+                    <div class="card-elevated p-4 space-y-1">
+                        <div class="font-bold text-sm" style="color: var(--text-primary);">Macro Distribution</div>
+                        <p style="color: var(--text-secondary);">Protein 1.6–2.2 g/kg across 3–5 meals; Carbs 4–6 g/kg (include 25–40 g carbs + protein 60–90m pre-workout); Fats 0.6–0.9 g/kg.</p>
+                    </div>
+                    <div class="card-elevated p-4 space-y-1">
+                        <div class="font-bold text-sm" style="color: var(--text-primary);">7+ Hours Nightly Sleep</div>
+                        <p style="color: var(--text-secondary);">Growth hormone release, glycogen resynthesis, and neural recovery depend on 7+ hours of sleep across 5 weekly sessions.</p>
+                    </div>
+                    <div class="card-elevated p-4 space-y-1">
+                        <div class="font-bold text-sm" style="color: var(--text-primary);">Scheduled Deload (Every 4–6 Weeks)</div>
+                        <p style="color: var(--text-secondary);">Reduce working weights to ~60% (or cut working sets in half) for 1 week whenever joint fatigue accumulates or reps stall.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Poster Exercise Inventory Table -->
+            <div class="card p-6 space-y-4">
+                <div>
+                    <div class="label-caps">POSTER VERIFICATION</div>
+                    <h2 class="section-title mt-1">Bodybuilding Workout Posters Audit</h2>
+                    <p class="text-xs mt-1" style="color: var(--text-secondary);">
+                        Verified exercises from the 7-poster series are prioritized; Behind-the-Neck Press and Front Raises were filtered out to protect shoulder joints and prevent front-delt overuse.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border" style="border-color: var(--border);">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr style="background-color: var(--elevated); color: var(--text-secondary); border-bottom: 1px solid var(--border);">
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider">Poster</th>
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider">Verified Roster</th>
+                                <th class="py-3 px-4 font-semibold uppercase tracking-wider">Program Integration</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y" style="border-color: var(--border);">
+                            <tr>
+                                <td class="py-3 px-4 font-bold" style="color: var(--chest);">Chest</td>
+                                <td class="py-3 px-4" style="color: var(--text-secondary);">Bench Press, DB Press, Decline Press, Incline Press, Incline DB Press, DB Fly, Incline DB Fly, DB Pullover</td>
+                                <td class="py-3 px-4">Bench Press, Incline Press, Incline DB Press, DB Press, DB Fly, DB Pullover</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold" style="color: var(--back);">Back</td>
+                                <td class="py-3 px-4" style="color: var(--text-secondary);">Bent-Over Row, One-Arm DB Row, Seated Row, T-Bar Row, Lat Pulldown, Front Chin-Up, Upright Row, Back Extension</td>
+                                <td class="py-3 px-4">Bent-Over Row, Lat Pulldown, Seated Row, Back Extension, Front Chin-Up, One-Arm DB Row</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold" style="color: var(--shoulders);">Shoulders</td>
+                                <td class="py-3 px-4" style="color: var(--text-secondary);">Seated Military Press, Alt DB Press, Behind-the-Neck Press, Side Lateral, Bent-Over Lateral, Low-Pulley Raise, BB/Alt Front Raises</td>
+                                <td class="py-3 px-4">Seated Military, Alt DB Press, Side Lateral, Low-Pulley, Bent-Over Lateral (Filtered BTN &amp; Front Raises)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold" style="color: var(--arms);">Arms</td>
+                                <td class="py-3 px-4" style="color: var(--text-secondary);">DB Curl, Alt DB Curl, Barbell Curl, Concentration Curl (4 verified; Triceps/Forearms unlabeled on thumbnail)</td>
+                                <td class="py-3 px-4">Barbell Curl, Concentration/Alt DB Curl + Hammer Curl, Wrist/Rev Wrist Curl, Overhead Ext, Pushdown</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold" style="color: var(--legs);">Legs &amp; Core</td>
+                                <td class="py-3 px-4" style="color: var(--text-secondary);">8 exercises per poster (captions unreadable on low-res thumbnail)</td>
+                                <td class="py-3 px-4">Back Squat, RDL, Deadlift, Leg Press, Hack Squat, Split Squat, Leg Ext/Curl, Calves, Hanging Leg Raise, Cable Crunch</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 5: SETTINGS (Bodyweight Calibration + Macros + Loads) -->
+        <!-- ========================================================= -->
+        <section id="view-settings" class="tab-view space-y-6">
+            <div>
+                <div class="label-caps mb-1.5">PERSONAL CALIBRATION</div>
+                <h1 class="heading-xl">Weights &amp; Bulking Targets</h1>
+            </div>
+
+            <!-- Interactive Calibration Controls -->
+            <div class="card p-6 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Bodyweight Stepper -->
+                    <div class="card-elevated p-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="label-caps">BODYWEIGHT</span>
+                            <div class="flex rounded-lg overflow-hidden border" style="border-color: var(--border);">
+                                <button id="unit-kg-btn" onclick="setWeightUnit('kg')" class="px-2.5 py-0.5 text-xs font-bold">KG</button>
+                                <button id="unit-lb-btn" onclick="setWeightUnit('lb')" class="px-2.5 py-0.5 text-xs font-bold">LB</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <button onclick="adjustBodyweight(-1)" class="btn btn-ghost w-10 h-10 p-0" aria-label="Decrease weight">
+                                <i data-lucide="minus" class="w-4 h-4" stroke-width="1.75"></i>
+                            </button>
+                            <div class="text-3xl font-extrabold tabular" id="settings-bw-display">65 kg</div>
+                            <button onclick="adjustBodyweight(1)" class="btn btn-ghost w-10 h-10 p-0" aria-label="Increase weight">
+                                <i data-lucide="plus" class="w-4 h-4" stroke-width="1.75"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Sex Benchmark -->
+                    <div class="card-elevated p-4 space-y-2">
+                        <label for="settings-sex" class="label-caps block">STRENGTH BENCHMARK</label>
+                        <select id="settings-sex" onchange="updateSettingsFromInputs()" class="w-full mt-1 px-3.5 py-2.5 rounded-xl text-sm font-semibold focus:outline-none" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text-primary);">
+                            <option value="male">Male Beginner Ratios</option>
+                            <option value="female">Female Beginner Ratios</option>
+                        </select>
+                        <div class="text-[11px]" style="color: var(--text-secondary);">Computes Week 1 ~75% 1RM loads</div>
+                    </div>
+
+                    <!-- Bulking Surplus -->
+                    <div class="card-elevated p-4 space-y-2">
+                        <label for="settings-surplus" class="label-caps block">BULKING SURPLUS</label>
+                        <select id="settings-surplus" onchange="updateSettingsFromInputs()" class="w-full mt-1 px-3.5 py-2.5 rounded-xl text-sm font-semibold focus:outline-none" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text-primary);">
+                            <option value="350">Fast Lean Bulk (+350 kcal)</option>
+                            <option value="450">Hardgainer Surplus (+450 kcal)</option>
+                            <option value="200">Conservative Lean (+200 kcal)</option>
+                        </select>
+                        <div class="text-[11px]" style="color: var(--text-secondary);">Added to ~33 kcal/kg maintenance</div>
+                    </div>
+                </div>
+
+                <!-- Experience Level Toggle -->
+                <div class="card-elevated p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <div class="font-bold text-sm">Training Experience Phase</div>
+                        <div class="text-xs" style="color: var(--text-secondary);">Weeks 1–2 ramp-in reduces 3-set exercises to 2 sets to manage initial soreness.</div>
+                    </div>
+                    <select id="settings-exp" onchange="syncExperienceSetting(this.value)" class="px-3.5 py-2 rounded-xl text-xs font-semibold focus:outline-none" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text-primary);">
+                        <option value="standard">Week 3+ Standard Volume</option>
+                        <option value="novice">Weeks 1–2 Novice Ramp-In</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Macros + Starting Weights Output -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Daily Bulking Macros -->
+                <div class="card p-6 space-y-4">
+                    <div>
+                        <div class="label-caps">DAILY NUTRITION TARGETS</div>
+                        <h2 class="section-title mt-1">Fast-Bulking Macros</h2>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 tabular" id="settings-macros-grid"></div>
+                </div>
+
+                <!-- Week 1 Working Weights -->
+                <div class="card p-6 space-y-4">
+                    <div>
+                        <div class="label-caps">EPLEY 75–80% 1RM CALIBRATION</div>
+                        <h2 class="section-title mt-1">Week 1 Compound Weights</h2>
+                    </div>
+                    <div class="divide-y tabular" style="border-color: var(--border);" id="settings-weights-list"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Mobile Bottom Tab Bar -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-50 border-t px-2 py-2 flex items-center justify-around" style="background-color: rgba(20,20,22,0.95); backdrop-filter: blur(16px); border-color: var(--border);" aria-label="Mobile Navigation">
+        <button onclick="switchTab('today')" data-nav="today" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-[11px] font-semibold transition">
+            <i data-lucide="dumbbell" class="w-5 h-5" stroke-width="1.75"></i>
+            <span>Today</span>
+        </button>
+        <button onclick="switchTab('plan')" data-nav="plan" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-[11px] font-semibold transition">
+            <i data-lucide="calendar-days" class="w-5 h-5" stroke-width="1.75"></i>
+            <span>Plan</span>
+        </button>
+        <button onclick="switchTab('progress')" data-nav="progress" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-[11px] font-semibold transition">
+            <i data-lucide="bar-chart-3" class="w-5 h-5" stroke-width="1.75"></i>
+            <span>Progress</span>
+        </button>
+        <button onclick="switchTab('guide')" data-nav="guide" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-[11px] font-semibold transition">
+            <i data-lucide="book-open" class="w-5 h-5" stroke-width="1.75"></i>
+            <span>Guide</span>
+        </button>
+        <button onclick="switchTab('settings')" data-nav="settings" class="mobile-nav-btn flex flex-col items-center gap-1 py-1 px-3 rounded-xl text-[11px] font-semibold transition">
+            <i data-lucide="settings" class="w-5 h-5" stroke-width="1.75"></i>
+            <span>Settings</span>
+        </button>
+    </nav>
+
+    <script>
+        // =========================================================
+        // 1. DATA & STATE
+        // =========================================================
+        const MUSCLE_META = {
+            chest:     { label: 'Chest',     color: 'var(--chest)',     hex: '#FF5A5F' },
+            back:      { label: 'Back',      color: 'var(--back)',      hex: '#4C8DFF' },
+            shoulders: { label: 'Shoulders', color: 'var(--shoulders)', hex: '#F5A623' },
+            arms:      { label: 'Arms',      color: 'var(--arms)',      hex: '#A78BFA' },
+            legs:      { label: 'Legs',      color: 'var(--legs)',      hex: '#2ECC71' },
+            core:      { label: 'Core',      color: 'var(--core)',      hex: '#F062B0' }
+        };
+
+        const WORKOUT_DAYS = {
+            day1: {
+                short: 'Mon · D1',
+                tag: 'MONDAY • ARNOLD SPLIT',
+                title: 'Chest & Back',
+                duration: '~52–54 min',
+                standardSets: 22,
+                noviceSets: 16,
+                muscles: ['chest', 'back'],
+                exercises: [
+                    { order: '1',  name: 'Flat Barbell Bench Press', origin: 'Chest Poster', isPoster: true, muscle: 'chest', sets: 3, reps: '6–8', pairing: 'Straight sets · 2.5m rest', rir: '2 RIR', superset: false, benchKey: 'bench' },
+                    { order: '2',  name: 'Barbell Bent-Over Row', origin: 'Back Poster', isPoster: true, muscle: 'back', sets: 3, reps: '8–10', pairing: 'Straight sets · 2.5m rest', rir: '2 RIR', superset: false, benchKey: 'row' },
+                    { order: '3A', name: 'Incline Dumbbell Press', origin: 'Chest Poster', isPoster: true, muscle: 'chest', sets: 3, reps: '8–12', pairing: 'Superset w/ 3B · 30–45s swap', rir: '1–2 RIR', superset: true },
+                    { order: '3B', name: 'Lat Pulldown (Front)', origin: 'Back Poster', isPoster: true, muscle: 'back', sets: 3, reps: '8–12', pairing: 'Rest 2m after 3B', rir: '1–2 RIR', superset: true },
+                    { order: '4A', name: 'Dumbbell Fly', origin: 'Chest Poster', isPoster: true, muscle: 'chest', sets: 3, reps: '12–15', pairing: 'Superset w/ 4B · 30–45s swap', rir: '1 RIR', superset: true },
+                    { order: '4B', name: 'Seated Cable Row', origin: 'Back Poster', isPoster: true, muscle: 'back', sets: 3, reps: '10–12', pairing: 'Rest 2m after 4B', rir: '1–2 RIR', superset: true },
+                    { order: '5A', name: 'Dumbbell Pullover', origin: 'Chest Poster', isPoster: true, muscle: 'chest', sets: 2, reps: '12–15', pairing: 'Superset w/ 5B · 30s swap', rir: '1–2 RIR', superset: true },
+                    { order: '5B', name: 'Back Extension', origin: 'Back Poster', isPoster: true, muscle: 'back', sets: 2, reps: '12–15', pairing: 'Rest 90s after 5B', rir: '2 RIR', superset: true }
+                ]
+            },
+            day2: {
+                short: 'Tue · D2',
+                tag: 'TUESDAY • ARNOLD SPLIT',
+                title: 'Shoulders & Arms',
+                duration: '~49–51 min',
+                standardSets: 25,
+                noviceSets: 18,
+                muscles: ['shoulders', 'arms'],
+                exercises: [
+                    { order: '1',  name: 'Seated Military Press', origin: 'Shoulders Poster', isPoster: true, muscle: 'shoulders', sets: 3, reps: '6–10', pairing: 'Straight sets · 2.5m rest', rir: '2 RIR', superset: false, benchKey: 'ohp' },
+                    { order: '2A', name: 'Side Lateral Raise', origin: 'Shoulders Poster', isPoster: true, muscle: 'shoulders', sets: 3, reps: '12–15', pairing: 'Superset w/ 2B · 30s swap', rir: '0–1 RIR', superset: true },
+                    { order: '2B', name: 'Bent-Over Lateral Raise', origin: 'Shoulders Poster', isPoster: true, muscle: 'shoulders', sets: 3, reps: '12–15', pairing: 'Rest 90s after 2B', rir: '1 RIR', superset: true },
+                    { order: '3A', name: 'Barbell Curl', origin: 'Biceps Poster', isPoster: true, muscle: 'arms', sets: 3, reps: '8–10', pairing: 'Superset w/ 3B · 30–45s swap', rir: '1–2 RIR', superset: true },
+                    { order: '3B', name: 'Overhead Triceps Extension', origin: 'Arnold / Hybrid', isPoster: false, muscle: 'arms', sets: 3, reps: '10–12', pairing: 'Rest 2m after 3B', rir: '1–2 RIR', superset: true },
+                    { order: '4A', name: 'Concentration / Alt DB Curl', origin: 'Biceps Poster', isPoster: true, muscle: 'arms', sets: 3, reps: '10–12', pairing: 'Superset w/ 4B · 30s swap', rir: '1 RIR', superset: true },
+                    { order: '4B', name: 'Rope / V-Bar Triceps Pushdown', origin: 'Hybrid Addition', isPoster: false, muscle: 'arms', sets: 3, reps: '10–15', pairing: 'Rest 90s after 4B', rir: '0–1 RIR', superset: true },
+                    { order: '5A', name: 'Barbell / DB Wrist Curl', origin: 'Arnold Addition', isPoster: false, muscle: 'arms', sets: 2, reps: '12–15', pairing: 'Superset w/ 5B · 15–30s swap', rir: '1 RIR', superset: true },
+                    { order: '5B', name: 'Reverse Wrist Curl', origin: 'Arnold Addition', isPoster: false, muscle: 'arms', sets: 2, reps: '12–15', pairing: 'Rest 60s after 5B', rir: '1 RIR', superset: true }
+                ]
+            },
+            day3: {
+                short: 'Wed · D3',
+                tag: 'WEDNESDAY • ARNOLD SPLIT',
+                title: 'Legs & Abs',
+                duration: '~52–54 min',
+                standardSets: 22,
+                noviceSets: 16,
+                muscles: ['legs', 'core'],
+                exercises: [
+                    { order: '1',  name: 'Barbell Back Squat', origin: 'Arnold / Hybrid', isPoster: false, muscle: 'legs', sets: 3, reps: '6–8', pairing: 'Straight sets · 3m rest', rir: '2 RIR', superset: false, benchKey: 'squat' },
+                    { order: '2',  name: 'Barbell Romanian Deadlift', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 3, reps: '8–10', pairing: 'Straight sets · 2.5m rest', rir: '2 RIR', superset: false },
+                    { order: '3',  name: '45° Leg Press', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 3, reps: '10–12', pairing: 'Straight sets · 2m rest', rir: '1–2 RIR', superset: false },
+                    { order: '4A', name: 'Machine Leg Extension', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 3, reps: '12–15', pairing: 'Superset w/ 4B · 30s swap', rir: '1 RIR', superset: true },
+                    { order: '4B', name: 'Seated or Lying Leg Curl', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 3, reps: '10–15', pairing: 'Rest 90s after 4B', rir: '1 RIR', superset: true },
+                    { order: '5A', name: 'Standing Calf Raise', origin: 'Arnold / Hybrid', isPoster: false, muscle: 'legs', sets: 4, reps: '12–15', pairing: 'Superset w/ 5B · 30s swap', rir: '1 RIR', superset: true },
+                    { order: '5B', name: 'Hanging Leg Raise', origin: 'Arnold / Hybrid', isPoster: false, muscle: 'core', sets: 3, reps: '12–15', pairing: 'Rest 90s after 5B', rir: '1–2 RIR', superset: true }
+                ]
+            },
+            day5: {
+                short: 'Fri · D4',
+                tag: 'FRIDAY • UPPER HYBRID',
+                title: 'Upper Body',
+                duration: '~50–52 min',
+                standardSets: 24,
+                noviceSets: 16,
+                muscles: ['chest', 'back', 'shoulders', 'arms'],
+                exercises: [
+                    { order: '1A', name: 'Incline Barbell Press', origin: 'Chest Poster', isPoster: true, muscle: 'chest', sets: 3, reps: '8–10', pairing: 'Superset w/ 1B · 45s swap', rir: '2 RIR', superset: true },
+                    { order: '1B', name: 'Front Chin-Up (or Assisted)', origin: 'Back Poster', isPoster: true, muscle: 'back', sets: 3, reps: '6–10', pairing: 'Rest 2m after 1B', rir: '1–2 RIR', superset: true },
+                    { order: '2A', name: 'Flat Dumbbell Press', origin: 'Chest Poster', isPoster: true, muscle: 'chest', sets: 3, reps: '8–12', pairing: 'Superset w/ 2B · 45s swap', rir: '1–2 RIR', superset: true },
+                    { order: '2B', name: 'One-Arm Dumbbell Row', origin: 'Back Poster', isPoster: true, muscle: 'back', sets: 3, reps: '8–12 / arm', pairing: 'Rest 2m after 2B', rir: '1–2 RIR', superset: true },
+                    { order: '3A', name: 'Alternate DB Shoulder Press', origin: 'Shoulders Poster', isPoster: true, muscle: 'shoulders', sets: 3, reps: '8–12', pairing: 'Superset w/ 3B · 30s swap', rir: '1–2 RIR', superset: true },
+                    { order: '3B', name: 'Low-Pulley / Side Lateral Raise', origin: 'Shoulders Poster', isPoster: true, muscle: 'shoulders', sets: 3, reps: '12–15', pairing: 'Rest 90s after 3B', rir: '0–1 RIR', superset: true },
+                    { order: '4A', name: 'Dumbbell Hammer Curl', origin: 'Hybrid Addition', isPoster: false, muscle: 'arms', sets: 3, reps: '10–12', pairing: 'Superset w/ 4B · 30s swap', rir: '1 RIR', superset: true },
+                    { order: '4B', name: 'Overhead Cable Ext / Pushdown', origin: 'Hybrid Addition', isPoster: false, muscle: 'arms', sets: 3, reps: '10–15', pairing: 'Rest 90s after 4B', rir: '0–1 RIR', superset: true }
+                ]
+            },
+            day6: {
+                short: 'Sat · D5',
+                tag: 'SATURDAY • LOWER HYBRID',
+                title: 'Lower Body & Abs',
+                duration: '~50–52 min',
+                standardSets: 19,
+                noviceSets: 14,
+                muscles: ['legs', 'core'],
+                exercises: [
+                    { order: '1',  name: 'Barbell Deadlift', origin: 'Arnold / Hybrid', isPoster: false, muscle: 'legs', sets: 3, reps: '5–8', pairing: 'Straight sets · 3m rest', rir: '2 RIR', superset: false, benchKey: 'deadlift' },
+                    { order: '2',  name: 'Hack Squat (or Leg Press)', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 3, reps: '8–12', pairing: 'Straight sets · 2.5m rest', rir: '1–2 RIR', superset: false },
+                    { order: '3',  name: 'DB Bulgarian Split Squat', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 3, reps: '10–12 / leg', pairing: 'Straight sets · 2m rest', rir: '1–2 RIR', superset: false },
+                    { order: '4A', name: 'Seated or Lying Leg Curl', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 3, reps: '12–15', pairing: 'Superset w/ 4B · 30s swap', rir: '1 RIR', superset: true },
+                    { order: '4B', name: 'Seated Calf Raise', origin: 'Hybrid Addition', isPoster: false, muscle: 'legs', sets: 4, reps: '15–20', pairing: 'Rest 90s after 4B', rir: '1 RIR', superset: true },
+                    { order: '5',  name: 'Cable Crunch (or Weighted)', origin: 'Arnold / Hybrid', isPoster: false, muscle: 'core', sets: 3, reps: '12–15', pairing: 'Straight sets · 60s rest', rir: '1–2 RIR', superset: false }
+                ]
+            }
+        };
+
+        const DEFAULT_STATE = {
+            activeTab: 'today',
+            selectedDay: 'day1',
+            bodyweight: 65,
+            unit: 'kg',
+            sex: 'male',
+            surplus: 350,
+            experience: 'standard',
+            completed: { day1: {}, day2: {}, day3: {}, day5: {}, day6: {} }
+        };
+
+        let appState = loadState();
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem('arnold_5x_state_v1');
+                if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+                return { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...JSON.parse(raw) };
+            } catch (e) {
+                return JSON.parse(JSON.stringify(DEFAULT_STATE));
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('arnold_5x_state_v1', JSON.stringify(appState));
+            } catch (e) {}
+        }
+
+        // =========================================================
+        // 2. CALIBRATION MATH (WEIGHTS & MACROS)
+        // =========================================================
+        function roundInc(val, inc) {
+            return Math.round(val / inc) * inc;
+        }
+
+        function getWeightKg() {
+            return appState.unit === 'kg' ? appState.bodyweight : appState.bodyweight / 2.20462;
+        }
+
+        function computeCompoundBenchmarks() {
+            const wKg = getWeightKg();
+            const isMale = appState.sex === 'male';
+            const specs = isMale
+                ? {
+                    bench:    { name: 'Flat Barbell Bench Press', ratio: 0.66, minKg: 20, reps: '6–8' },
+                    squat:    { name: 'Barbell Back Squat',       ratio: 0.88, minKg: 20, reps: '6–8' },
+                    deadlift: { name: 'Barbell Deadlift',         ratio: 1.07, minKg: 30, reps: '5–8' },
+                    ohp:      { name: 'Seated Military Press',    ratio: 0.38, minKg: 20, reps: '6–10' },
+                    row:      { name: 'Barbell Bent-Over Row',    ratio: 0.56, minKg: 20, reps: '8–10' }
+                }
+                : {
+                    bench:    { name: 'Flat Barbell Bench Press', ratio: 0.35, minKg: 15, reps: '6–8' },
+                    squat:    { name: 'Barbell Back Squat',       ratio: 0.55, minKg: 20, reps: '6–8' },
+                    deadlift: { name: 'Barbell Deadlift',         ratio: 0.72, minKg: 20, reps: '5–8' },
+                    ohp:      { name: 'Seated Military Press',    ratio: 0.22, minKg: 10, reps: '6–10' },
+                    row:      { name: 'Barbell Bent-Over Row',    ratio: 0.32, minKg: 15, reps: '8–10' }
+                };
+
+            const out = {};
+            for (const [key, item] of Object.entries(specs)) {
+                const oneRmKg = Math.max(item.minKg, wKg * item.ratio);
+                const lowKg = Math.max(item.minKg, roundInc(oneRmKg * 0.72, 2.5));
+                const highKg = Math.max(lowKg, roundInc(oneRmKg * 0.78, 2.5));
+
+                if (appState.unit === 'kg') {
+                    out[key] = {
+                        name: item.name,
+                        oneRm: `${roundInc(oneRmKg, 2.5)} kg`,
+                        work: lowKg === highKg ? `${lowKg} kg` : `${lowKg}–${highKg} kg`
+                    };
+                } else {
+                    const oneRmLb = roundInc(oneRmKg * 2.20462, 5);
+                    const lowLb = roundInc(lowKg * 2.20462, 5);
+                    const highLb = Math.max(lowLb, roundInc(highKg * 2.20462, 5));
+                    out[key] = {
+                        name: item.name,
+                        oneRm: `${oneRmLb} lb`,
+                        work: lowLb === highLb ? `${lowLb} lb` : `${lowLb}–${highLb} lb`
+                    };
+                }
+            }
+            return out;
+        }
+
+        function computeMacros() {
+            const wKg = getWeightKg();
+            const maint = Math.round(wKg * 33);
+            const targetKcal = maint + Number(appState.surplus);
+            const protLow = Math.round(wKg * 1.6);
+            const protHigh = Math.round(wKg * 2.2);
+            const carbLow = Math.round(wKg * 4.0);
+            const carbHigh = Math.round(wKg * 6.0);
+            const fatLow = Math.round(wKg * 0.6);
+            const fatHigh = Math.round(wKg * 0.9);
+            const maxGainKg = (wKg * 0.02).toFixed(1);
+            const maxGainLb = (wKg * 2.20462 * 0.02).toFixed(1);
+
+            return {
+                maint,
+                targetKcal,
+                protein: `${protLow}–${protHigh} g`,
+                carbs: `${carbLow}–${carbHigh} g`,
+                fats: `${fatLow}–${fatHigh} g`,
+                gainCap: appState.unit === 'kg' ? `+${maxGainKg} kg/mo` : `+${maxGainLb} lb/mo`
+            };
+        }
+
+        // =========================================================
+        // 3. NAVIGATION & RENDERING
+        // =========================================================
+        function switchTab(tabName) {
+            appState.activeTab = tabName;
+            saveState();
+
+            document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+            const target = document.getElementById('view-' + tabName);
+            if (target) target.classList.add('active');
+
+            // Desktop nav styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const active = btn.getAttribute('data-nav') === tabName;
+                btn.style.backgroundColor = active ? 'var(--accent)' : 'transparent';
+                btn.style.color = active ? '#0A0A0B' : 'var(--text-secondary)';
+            });
+
+            // Mobile nav styling
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                const active = btn.getAttribute('data-nav') === tabName;
+                btn.style.color = active ? 'var(--accent)' : 'var(--text-secondary)';
+            });
+
+            if (tabName === 'today') renderTodayView();
+            if (tabName === 'plan') renderPlanView();
+            if (tabName === 'progress') renderProgressView();
+            if (tabName === 'settings') renderSettingsView();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectDay(dayKey) {
+            appState.selectedDay = dayKey;
+            saveState();
+            renderTodayView();
+            renderPlanView();
+        }
+
+        function getAdjustedSets(baseSets) {
+            if (appState.experience === 'novice' && baseSets >= 3) {
+                return baseSets === 4 ? 3 : 2;
+            }
+            return baseSets;
+        }
+
+        // --- Render Today View ---
+        function renderTodayView() {
+            const day = WORKOUT_DAYS[appState.selectedDay];
+            const benchmarks = computeCompoundBenchmarks();
+
+            // Day pills
+            const pillsContainer = document.getElementById('today-day-pills');
+            pillsContainer.innerHTML = Object.entries(WORKOUT_DAYS).map(([key, d]) => {
+                const isSel = key === appState.selectedDay;
+                return `
+                    <button onclick="selectDay('${key}')" class="pill px-3.5 py-1.5 text-xs font-semibold shrink-0 transition"
+                        style="background-color: ${isSel ? 'var(--accent)' : 'var(--surface)'};
+                               color: ${isSel ? '#0A0A0B' : 'var(--text-secondary)'};
+                               border: 1px solid ${isSel ? 'var(--accent)' : 'var(--border)'};">
+                        ${d.short}
+                    </button>
+                `;
+            }).join('');
+
+            // Header details
+            const totalSets = appState.experience === 'novice' ? day.noviceSets : day.standardSets;
+            const durText = appState.experience === 'novice' ? '~40–44 min (Ramp-in)' : day.duration;
+            document.getElementById('today-day-tag').textContent = day.tag;
+            document.getElementById('today-title').textContent = day.title;
+            document.getElementById('today-meta').textContent = `${durText} • ${totalSets} working sets • Antagonist supersets`;
+
+            // Muscle chips & Body map highlighting
+            const chipsEl = document.getElementById('today-muscle-chips');
+            chipsEl.innerHTML = day.muscles.map(m => {
+                const meta = MUSCLE_META[m];
+                return `
+                    <span class="pill px-3 py-1 text-xs font-semibold inline-flex items-center gap-1.5"
+                          style="background-color: var(--elevated); border: 1px solid var(--border); color: var(--text-primary);">
+                        <span class="w-2 h-2 rounded-full" style="background-color: ${meta.hex};"></span>
+                        ${meta.label}
+                    </span>
+                `;
+            }).join('');
+
+            // Update SVG body map paths
+            Object.keys(MUSCLE_META).forEach(m => {
+                const isActive = day.muscles.includes(m);
+                const color = isActive ? MUSCLE_META[m].hex : '#242429';
+                const fPath = document.getElementById('front-' + m);
+                const bPath = document.getElementById('back-' + m);
+                if (fPath) fPath.style.fill = color;
+                if (bPath) bPath.style.fill = color;
+            });
+
+            // Exercises list
+            const doneMap = appState.completed[appState.selectedDay] || {};
+            let doneCount = 0;
+
+            const listEl = document.getElementById('today-exercise-list');
+            listEl.innerHTML = day.exercises.map((ex, idx) => {
+                const isDone = !!doneMap[idx];
+                if (isDone) doneCount++;
+                const sets = getAdjustedSets(ex.sets);
+                const mMeta = MUSCLE_META[ex.muscle];
+                const loadHint = ex.benchKey && benchmarks[ex.benchKey]
+                    ? `<span class="pill px-2.5 py-0.5 text-[11px] font-bold tabular" style="background-color: var(--accent-dim); color: var(--accent);">${benchmarks[ex.benchKey].work}</span>`
+                    : '';
+
+                return `
+                    <div onclick="toggleTodayExercise(${idx})" class="card p-4 flex items-center justify-between gap-3 cursor-pointer transition"
+                         style="border-color: ${isDone ? 'rgba(48, 209, 88, 0.4)' : 'var(--border)'}; opacity: ${isDone ? '0.68' : '1'};">
+                        <div class="flex items-start gap-3.5 min-w-0">
+                            <div class="mt-0.5 shrink-0" style="color: ${isDone ? 'var(--success)' : 'var(--text-secondary)'};">
+                                <i data-lucide="check-circle-2" class="w-5 h-5" stroke-width="1.75"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="text-xs font-extrabold tabular px-2 py-0.5 rounded-md"
+                                          style="background-color: var(--elevated); color: ${ex.superset ? 'var(--accent)' : 'var(--text-primary)'}; border: 1px solid var(--border);">
+                                        ${ex.order}
+                                    </span>
+                                    <span class="font-bold text-sm sm:text-base truncate ${isDone ? 'line-through' : ''}">${ex.name}</span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2 mt-1.5 text-xs" style="color: var(--text-secondary);">
+                                    <span class="inline-flex items-center gap-1 font-medium" style="color: ${mMeta.hex};">
+                                        <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${mMeta.hex};"></span>
+                                        ${mMeta.label}
+                                    </span>
+                                    <span>&bull;</span>
+                                    <span>${ex.pairing}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-end gap-1.5 shrink-0 tabular">
+                            <div class="text-sm font-extrabold">${sets} &times; ${ex.reps}</div>
+                            <div class="flex items-center gap-1.5">
+                                ${loadHint}
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md" style="background-color: var(--elevated); color: var(--text-secondary);">
+                                    ${ex.rir}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Update Progress Ring
+            const total = day.exercises.length;
+            const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+            const circumference = 207.35;
+            const offset = circumference - (pct / 100) * circumference;
+            document.getElementById('today-ring-circle').style.strokeDashoffset = offset;
+            document.getElementById('today-ring-pct').textContent = `${pct}%`;
+            document.getElementById('today-ring-sub').textContent = `${doneCount}/${total}`;
+
+            lucide.createIcons();
+        }
+
+        function toggleTodayExercise(idx) {
+            if (!appState.completed[appState.selectedDay]) {
+                appState.completed[appState.selectedDay] = {};
+            }
+            appState.completed[appState.selectedDay][idx] = !appState.completed[appState.selectedDay][idx];
+            saveState();
+            renderTodayView();
+        }
+
+        function resetTodayProgress() {
+            appState.completed[appState.selectedDay] = {};
+            saveState();
+            renderTodayView();
+        }
+
+        // --- Render Plan View ---
+        function renderPlanView() {
+            document.getElementById('plan-exp-select').value = appState.experience;
+            const srcFilter = document.getElementById('plan-source-select').value;
+
+            const schedule = [
+                { key: 'day1', day: 'MON', name: 'Chest & Back', sets: '22 sets', rest: false },
+                { key: 'day2', day: 'TUE', name: 'Shoulders & Arms', sets: '25 sets', rest: false },
+                { key: 'day3', day: 'WED', name: 'Legs & Abs', sets: '22 sets', rest: false },
+                { key: null,   day: 'THU', name: 'Active Rest', sets: 'Recovery', rest: true },
+                { key: 'day5', day: 'FRI', name: 'Upper Hybrid', sets: '24 sets', rest: false },
+                { key: 'day6', day: 'SAT', name: 'Lower Hybrid', sets: '19 sets', rest: false },
+                { key: null,   day: 'SUN', name: 'Full Rest', sets: 'Recovery', rest: true }
+            ];
+
+            document.getElementById('plan-week-grid').innerHTML = schedule.map(slot => {
+                if (slot.rest) {
+                    return `
+                        <div class="card p-3.5 opacity-60 flex flex-col justify-between" style="border-style: dashed;">
+                            <div class="label-caps">${slot.day}</div>
+                            <div class="font-bold text-sm mt-2">${slot.name}</div>
+                            <div class="text-xs mt-1" style="color: var(--text-secondary);">${slot.sets}</div>
+                        </div>
+                    `;
+                }
+                const active = slot.key === appState.selectedDay;
+                const d = WORKOUT_DAYS[slot.key];
+                const dots = d.muscles.map(m => `<span class="w-2 h-2 rounded-full" style="background-color: ${MUSCLE_META[m].hex};"></span>`).join('');
+                return `
+                    <button onclick="selectDay('${slot.key}')" class="card p-3.5 text-left flex flex-col justify-between transition"
+                            style="border-color: ${active ? 'var(--accent)' : 'var(--border)'}; background-color: ${active ? 'var(--elevated)' : 'var(--surface)'};">
+                        <div class="flex items-center justify-between">
+                            <span class="label-caps" style="color: ${active ? 'var(--accent)' : 'var(--text-secondary)'};">${slot.day}</span>
+                            <div class="flex gap-1">${dots}</div>
+                        </div>
+                        <div class="font-bold text-sm mt-2">${slot.name}</div>
+                        <div class="text-xs mt-1 tabular" style="color: var(--text-secondary);">${d.duration}</div>
+                    </button>
+                `;
+            }).join('');
+
+            const activeDay = WORKOUT_DAYS[appState.selectedDay];
+            document.getElementById('plan-detail-tag').textContent = activeDay.tag;
+            document.getElementById('plan-detail-title').textContent = `${activeDay.title} (${activeDay.duration})`;
+
+            const filtered = activeDay.exercises.filter(ex => {
+                if (srcFilter === 'poster') return ex.isPoster;
+                if (srcFilter === 'hybrid') return !ex.isPoster;
+                return true;
+            });
+
+            document.getElementById('plan-detail-list').innerHTML = filtered.length
+                ? filtered.map(ex => {
+                    const sets = getAdjustedSets(ex.sets);
+                    const mMeta = MUSCLE_META[ex.muscle];
+                    return `
+                        <div class="card-elevated p-3.5 flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-extrabold tabular px-2 py-1 rounded-lg" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--accent);">
+                                    ${ex.order}
+                                </span>
+                                <div>
+                                    <div class="font-bold text-sm">${ex.name}</div>
+                                    <div class="flex items-center gap-2 mt-0.5 text-xs" style="color: var(--text-secondary);">
+                                        <span style="color: ${mMeta.hex};" class="font-semibold">${mMeta.label}</span>
+                                        <span>&bull;</span>
+                                        <span>${ex.origin}</span>
+                                        <span>&bull;</span>
+                                        <span>${ex.pairing}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 tabular">
+                                <span class="font-extrabold text-sm">${sets} &times; ${ex.reps}</span>
+                                <span class="pill px-2.5 py-0.5 text-[11px] font-semibold" style="background-color: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);">
+                                    ${ex.rir}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }).join('')
+                : `<div class="text-xs py-6 text-center" style="color: var(--text-secondary);">No exercises match this source filter on ${activeDay.title}.</div>`;
+
+            lucide.createIcons();
+        }
+
+        function launchSelectedPlanDay() {
+            switchTab('today');
+        }
+
+        // --- Render Progress View ---
+        let volumeChartInstance = null;
+        let timeChartInstance = null;
+
+        function renderProgressView() {
+            const macros = computeMacros();
+            document.getElementById('progress-gain-kpi').textContent = macros.gainCap;
+
+            const breakdown = [
+                { muscle: 'chest',     direct: 15, indirect: 2,   freq: 'Mon · Fri', note: 'Flat, Incline, Fly, Pullover' },
+                { muscle: 'back',      direct: 17, indirect: 1.5, freq: 'Mon · Fri', note: 'Rows, Pulldown, Chin-Up, Extensions' },
+                { muscle: 'shoulders', direct: 15, indirect: 4.5, freq: 'Tue · Fri', note: 'Military, DB Press, Side & Rear Laterals' },
+                { muscle: 'arms',      direct: 25, indirect: 20,  freq: 'Tue · Fri', note: '9 Biceps + 9 Triceps + 7 Forearm direct' },
+                { muscle: 'legs',      direct: 35, indirect: 6,   freq: 'Wed · Sat', note: '15 Quads + 12 Ham/Glute + 8 Calves' },
+                { muscle: 'core',      direct: 6,  indirect: 3,   freq: 'Wed · Sat', note: 'Hanging Leg Raises + Cable Crunches' }
+            ];
+
+            document.getElementById('muscle-summary-cards').innerHTML = breakdown.map(item => {
+                const meta = MUSCLE_META[item.muscle];
+                return `
+                    <div class="card-elevated p-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-sm flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${meta.hex};"></span>
+                                ${meta.label}
+                            </span>
+                            <span class="pill px-2.5 py-0.5 text-[11px] font-bold tabular" style="background-color: var(--surface); color: ${meta.hex};">
+                                ${item.freq}
+                            </span>
+                        </div>
+                        <div class="text-lg font-extrabold tabular">${item.direct} <span class="text-xs font-normal" style="color: var(--text-secondary);">direct sets/wk</span></div>
+                        <div class="text-xs" style="color: var(--text-secondary);">${item.note}</div>
+                    </div>
+                `;
+            }).join('');
+
+            initCharts();
+        }
+
+        function initCharts() {
+            if (volumeChartInstance) volumeChartInstance.destroy();
+            if (timeChartInstance) timeChartInstance.destroy();
+
+            Chart.defaults.color = '#8E8E93';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+
+            const volCtx = document.getElementById('volumeChart').getContext('2d');
+            volumeChartInstance = new Chart(volCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Back', 'Chest', 'Shoulders', 'Quads', 'Ham/Glutes', 'Triceps', 'Biceps', 'Calves', 'Core'],
+                    datasets: [
+                        {
+                            label: 'Direct Sets',
+                            data: [17, 15, 15, 15, 12, 9, 9, 8, 6],
+                            backgroundColor: ['#4C8DFF', '#FF5A5F', '#F5A623', '#2ECC71', '#2ECC71', '#A78BFA', '#A78BFA', '#2ECC71', '#F062B0'],
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Compound Overlap',
+                            data: [1.5, 2, 4.5, 1.5, 4.5, 9, 7.5, 0, 3],
+                            backgroundColor: '#2C2C32',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } }
+                    },
+                    scales: {
+                        x: { stacked: true, max: 24, grid: { color: '#26262A' }, ticks: { font: { size: 11 } } },
+                        y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } }
+                    }
+                }
+            });
+
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            timeChartInstance = new Chart(timeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Antagonist Supersets (26.5m)', 'Heavy Straight Sets (14.5m)', 'Ramp-Up Warm-Up (6m)', 'Transitions (5m)'],
+                    datasets: [{
+                        data: [26.5, 14.5, 6, 5],
+                        backgroundColor: ['#C6F432', '#4C8DFF', '#A78BFA', '#2C2C32'],
+                        borderColor: '#141416',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '66%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        // --- Render Settings View ---
+        function renderSettingsView() {
+            document.getElementById('settings-bw-display').textContent = `${appState.bodyweight} ${appState.unit}`;
+            document.getElementById('settings-sex').value = appState.sex;
+            document.getElementById('settings-surplus').value = String(appState.surplus);
+            document.getElementById('settings-exp').value = appState.experience;
+
+            const kgBtn = document.getElementById('unit-kg-btn');
+            const lbBtn = document.getElementById('unit-lb-btn');
+            kgBtn.style.backgroundColor = appState.unit === 'kg' ? 'var(--accent)' : 'var(--surface)';
+            kgBtn.style.color = appState.unit === 'kg' ? '#0A0A0B' : 'var(--text-secondary)';
+            lbBtn.style.backgroundColor = appState.unit === 'lb' ? 'var(--accent)' : 'var(--surface)';
+            lbBtn.style.color = appState.unit === 'lb' ? '#0A0A0B' : 'var(--text-secondary)';
+
+            const macros = computeMacros();
+            document.getElementById('header-kcal-badge').textContent = `${macros.targetKcal.toLocaleString()} kcal`;
+
+            document.getElementById('settings-macros-grid').innerHTML = `
+                <div class="card-elevated p-4">
+                    <div class="label-caps">DAILY TARGET</div>
+                    <div class="text-xl font-extrabold mt-1" style="color: var(--accent);">${macros.targetKcal.toLocaleString()} kcal</div>
+                    <div class="text-[11px] mt-0.5" style="color: var(--text-secondary);">Maint ~${macros.maint} + ${appState.surplus}</div>
+                </div>
+                <div class="card-elevated p-4">
+                    <div class="label-caps">PROTEIN</div>
+                    <div class="text-xl font-extrabold mt-1">${macros.protein}</div>
+                    <div class="text-[11px] mt-0.5" style="color: var(--text-secondary);">1.6–2.2 g/kg daily</div>
+                </div>
+                <div class="card-elevated p-4">
+                    <div class="label-caps">CARBOHYDRATES</div>
+                    <div class="text-xl font-extrabold mt-1">${macros.carbs}</div>
+                    <div class="text-[11px] mt-0.5" style="color: var(--text-secondary);">4.0–6.0 g/kg fuel</div>
+                </div>
+                <div class="card-elevated p-4">
+                    <div class="label-caps">DIETARY FAT</div>
+                    <div class="text-xl font-extrabold mt-1">${macros.fats}</div>
+                    <div class="text-[11px] mt-0.5" style="color: var(--text-secondary);">0.6–0.9 g/kg hormonal</div>
+                </div>
+            `;
+
+            const benchmarks = computeCompoundBenchmarks();
+            document.getElementById('settings-weights-list').innerHTML = Object.values(benchmarks).map(b => `
+                <div class="py-3 flex items-center justify-between gap-2">
+                    <div>
+                        <div class="font-bold text-sm">${b.name}</div>
+                        <div class="text-xs" style="color: var(--text-secondary);">Est. Beginner 1RM: ${b.oneRm}</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="pill px-3 py-1 text-xs font-extrabold" style="background-color: var(--accent-dim); color: var(--accent);">
+                            ${b.work}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function adjustBodyweight(delta) {
+            const step = appState.unit === 'kg' ? 1 : 2;
+            const min = appState.unit === 'kg' ? 40 : 90;
+            const max = appState.unit === 'kg' ? 150 : 330;
+            appState.bodyweight = Math.min(max, Math.max(min, appState.bodyweight + delta * step));
+            saveState();
+            renderSettingsView();
+        }
+
+        function setWeightUnit(newUnit) {
+            if (appState.unit === newUnit) return;
+            appState.bodyweight = newUnit === 'lb'
+                ? Math.round(appState.bodyweight * 2.20462)
+                : Math.round(appState.bodyweight / 2.20462);
+            appState.unit = newUnit;
+            saveState();
+            renderSettingsView();
+        }
+
+        function updateSettingsFromInputs() {
+            appState.sex = document.getElementById('settings-sex').value;
+            appState.surplus = parseInt(document.getElementById('settings-surplus').value, 10);
+            saveState();
+            renderSettingsView();
+        }
+
+        function syncExperienceSetting(val) {
+            appState.experience = val;
+            saveState();
+            renderSettingsView();
+            renderPlanView();
+            renderTodayView();
+        }
+
+        // =========================================================
+        // 4. REST TIMER LOGIC
+        // =========================================================
+        let timerSeconds = 90;
+        let timerInterval = null;
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function updateTimerUI() {
+            const disp = document.getElementById('timer-display');
+            const btn = document.getElementById('timer-toggle-btn');
+            disp.textContent = formatTime(timerSeconds);
+            disp.style.color = timerSeconds === 0 ? 'var(--success)' : 'var(--text-primary)';
+            btn.textContent = timerInterval ? 'Pause' : 'Start';
+        }
+
+        function setTimerPreset(sec) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timerSeconds = sec;
+            updateTimerUI();
+        }
+
+        function toggleTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                updateTimerUI();
+                return;
+            }
+            if (timerSeconds === 0) timerSeconds = 90;
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerUI();
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    updateTimerUI();
+                }
+            }, 1000);
+            updateTimerUI();
+        }
+
+        // =========================================================
+        // 5. BOOTSTRAP
+        // =========================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const macros = computeMacros();
+            document.getElementById('header-kcal-badge').textContent = `${macros.targetKcal.toLocaleString()} kcal`;
+            switchTab(appState.activeTab || 'today');
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+```
+
+I have updated the application to match your dark, minimal design specification:
+
+- **Theme & Typography**: Built on `#0A0A0B` background, `#141416` cards, `#1C1C1F` elevated blocks, `#26262A` borders, `#C6F432` lime accent, and semantic muscle colors (`#FF5A5F` Chest, `#4C8DFF` Back, `#F5A623` Shoulders, `#A78BFA` Arms, `#2ECC71` Legs, `#F062B0` Core) using **Inter** with `tabular-nums`.
+- **5-Tab Navigation**: Bottom mobile navigation bar and top desktop switcher (`Today · Plan · Progress · Guide · Settings`) powered by **Lucide** icons (`1.75px` stroke).
+- **Interactive Body Map & Workout Runner**: Inline SVG front/back silhouettes dynamically highlight active muscle groups for each training day alongside a live progress ring, preset rest timer (`45s`, `90s`, `2.5m`), and calibrated Week 1 compound working weights.
